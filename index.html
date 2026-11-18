@@ -1,0 +1,3454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FirstAid KZ — Первая помощь • Алғашқы көмек</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       1. DESIGN SYSTEM & CSS CUSTOM PROPERTIES (Medical Technical Minimalism)
+       ========================================================================== */
+    :root {
+      --bg-app: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --border-color: #E2E8F0;
+      --border-strong: #CBD5E1;
+
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #64748B;
+
+      --sos-red: #DC2626;
+      --sos-red-hover: #B91C1C;
+      --sos-red-bg: #FEF2F2;
+      --sos-red-border: #FECACA;
+
+      --med-blue: #0284C7;
+      --med-blue-hover: #0369A1;
+      --med-blue-bg: #F0F9FF;
+      --med-blue-border: #BAE6FD;
+
+      --safe-green: #16A34A;
+      --safe-green-bg: #F0FDF4;
+      --safe-green-border: #BBF7D0;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --shadow-modal: 0 20px 32px -8px rgba(15, 23, 42, 0.18);
+
+      --transition-fast: 0.18s cubic-bezier(0.2, 0, 0, 1);
+      --header-height: 68px;
+      --bottom-nav-height: 72px;
+      --container-max: 1040px;
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE TYPOGRAPHY
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background-color: var(--bg-app);
+      -webkit-tap-highlight-color: transparent;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      padding-bottom: calc(var(--bottom-nav-height) + 20px);
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding-bottom: 48px;
+      }
+    }
+
+    button, input, select {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: all var(--transition-fast);
+    }
+
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid var(--med-blue);
+      outline-offset: 2px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 0 24px;
+      }
+    }
+
+    /* ==========================================================================
+       3. STICKY HEADER & DESKTOP SUB-NAVIGATION
+       ========================================================================== */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-inner {
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background-color: var(--med-blue);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 1.0625rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.15;
+    }
+
+    .offline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 3px;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background-color: var(--safe-green-bg);
+      border: 1px solid var(--safe-green-border);
+      color: var(--safe-green);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .offline-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--safe-green);
+      flex-shrink: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Segmented Language Switcher */
+    .lang-switch {
+      display: inline-flex;
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+      min-height: 44px;
+      align-items: center;
+    }
+
+    .lang-btn {
+      min-width: 40px;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lang-btn.active {
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Pinned SOS Button */
+    .btn-sos {
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: var(--radius-md);
+      background-color: var(--sos-red);
+      color: #FFFFFF;
+      font-size: 0.925rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.28);
+    }
+
+    .btn-sos:hover, .btn-sos:active {
+      background-color: var(--sos-red-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Desktop Top Navigation Bar */
+    .desktop-nav {
+      display: none;
+      background-color: var(--bg-surface);
+      border-top: 1px solid var(--border-color);
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav {
+        display: block;
+      }
+    }
+
+    .desktop-nav-list {
+      display: flex;
+      gap: 8px;
+      padding: 8px 0;
+    }
+
+    .desktop-tab {
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .desktop-tab:hover {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .desktop-tab.active {
+      background-color: var(--med-blue-bg);
+      color: var(--med-blue);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       4. MOBILE BOTTOM TAB BAR
+       ========================================================================== */
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      height: var(--bottom-nav-height);
+      background-color: var(--bg-surface);
+      border-top: 1px solid var(--border-color);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 6px 8px;
+      gap: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .mobile-bottom-nav {
+        display: none;
+      }
+    }
+
+    .mobile-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 2px;
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    .mobile-tab.active {
+      color: var(--med-blue);
+      background-color: var(--med-blue-bg);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       5. MAIN CONTENT SECTIONS & ANTI-STRESS HERO
+       ========================================================================== */
+    .main-content {
+      flex: 1;
+      padding-top: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        padding-top: 28px;
+      }
+    }
+
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    .section-header {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.25;
+    }
+
+    @media (min-width: 768px) {
+      .section-title {
+        font-size: 1.85rem;
+      }
+    }
+
+    .section-subtitle {
+      margin-top: 6px;
+      font-size: 0.975rem;
+      color: var(--text-secondary);
+    }
+
+    /* QR First-Aid Kit Simulator Bar */
+    .qr-banner-btn {
+      width: 100%;
+      min-height: 60px;
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      background-color: var(--bg-surface);
+      border: 1.5px dashed var(--med-blue);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .qr-banner-btn:hover {
+      background-color: var(--med-blue-bg);
+    }
+
+    .qr-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qr-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      background-color: var(--med-blue-bg);
+      color: var(--med-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .qr-banner-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .qr-banner-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .qr-banner-pill {
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background-color: var(--med-blue);
+      color: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       6. SCENARIO GRID (8 Anti-Stress Cards)
+       ========================================================================== */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 560px) {
+      .scenarios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      .scenarios-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+    }
+
+    .scenario-card {
+      min-height: 92px;
+      padding: 16px;
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 960px) {
+      .scenario-card {
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 168px;
+      }
+    }
+
+    .scenario-card:hover {
+      border-color: var(--med-blue);
+      background-color: #FFFFFF;
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .scenario-card:active {
+      transform: translateY(0);
+    }
+
+    .scenario-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .scenario-icon.urgent {
+      background-color: var(--sos-red-bg);
+      color: var(--sos-red);
+    }
+
+    .scenario-icon.clinical {
+      background-color: var(--med-blue-bg);
+      color: var(--med-blue);
+    }
+
+    .scenario-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .scenario-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .scenario-hint {
+      margin-top: 4px;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    .scenario-meta {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       7. STEP-BY-STEP DECISION TREE PLAYER
+       ========================================================================== */
+    .player-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .player-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .btn-back-list {
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: var(--radius-md);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-back-list:hover {
+      background-color: var(--bg-subtle);
+    }
+
+    .step-counter-pill {
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      background-color: var(--med-blue-bg);
+      color: var(--med-blue);
+      font-size: 0.875rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .qr-context-strip {
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      background-color: var(--med-blue-bg);
+      border: 1px solid var(--med-blue-border);
+      color: var(--med-blue-hover);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background-color: var(--border-color);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--med-blue);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-fast);
+    }
+
+    .step-card {
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (min-width: 768px) {
+      .step-card {
+        padding: 28px;
+      }
+    }
+
+    .step-scenario-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--med-blue);
+      margin-bottom: 8px;
+    }
+
+    .step-heading {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .step-heading {
+        font-size: 1.65rem;
+      }
+    }
+
+    .step-instruction {
+      font-size: 1.08rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+    }
+
+    /* Interactive Decision Branching Box */
+    .branch-box {
+      margin-bottom: 20px;
+      padding: 16px;
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+    }
+
+    .branch-question {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .branch-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 520px) {
+      .branch-options {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .branch-btn {
+      min-height: 52px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-strong);
+      font-size: 0.925rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .branch-btn:hover {
+      border-color: var(--med-blue);
+    }
+
+    .branch-btn.selected {
+      background-color: var(--med-blue-bg);
+      border-color: var(--med-blue);
+      color: var(--med-blue-hover);
+    }
+
+    /* Timer Utility Pill inside step */
+    .timer-helper {
+      margin-bottom: 18px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--med-blue-bg);
+      border: 1px solid var(--med-blue-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .timer-display {
+      font-size: 1.25rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--med-blue-hover);
+    }
+
+    .btn-timer {
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: var(--radius-sm);
+      background-color: var(--med-blue);
+      color: #FFFFFF;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .btn-timer:hover {
+      background-color: var(--med-blue-hover);
+    }
+
+    /* Critical DO NOT Box */
+    .dont-box {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--sos-red-bg);
+      border: 2px solid var(--sos-red);
+      margin-bottom: 22px;
+    }
+
+    .dont-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--sos-red);
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+
+    .dont-text {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #7F1D1D;
+      line-height: 1.5;
+    }
+
+    /* Player Action Controls */
+    .player-controls {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 12px;
+    }
+
+    .btn-step-prev {
+      min-height: 56px;
+      padding: 0 18px;
+      border-radius: var(--radius-md);
+      background-color: var(--bg-subtle);
+      border: 1.5px solid var(--border-strong);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-step-prev:hover:not(:disabled) {
+      background-color: var(--border-color);
+    }
+
+    .btn-step-prev:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-step-next {
+      min-height: 56px;
+      padding: 0 20px;
+      border-radius: var(--radius-md);
+      background-color: var(--med-blue);
+      color: #FFFFFF;
+      font-size: 1.02rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-step-next:hover {
+      background-color: var(--med-blue-hover);
+    }
+
+    .btn-step-next.complete-state {
+      background-color: var(--safe-green);
+    }
+
+    .btn-step-next.complete-state:hover {
+      background-color: #15803D;
+    }
+
+    /* Protocol Completion Card */
+    .completion-box {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background-color: var(--safe-green-bg);
+      border: 1.5px solid var(--safe-green-border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .completion-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #14532D;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .completion-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Trust Badge Footer */
+    .trust-badge {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .trust-verified-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background-color: var(--safe-green-bg);
+      border: 1px solid var(--safe-green-border);
+      color: #15803D;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       8. EDTECH MODULE: KNOWLEDGE CHECK QUIZ
+       ========================================================================== */
+    .quiz-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .quiz-stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 18px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 18px;
+    }
+
+    .best-score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background-color: var(--safe-green-bg);
+      border: 1px solid var(--safe-green-border);
+      color: var(--safe-green);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .quiz-card {
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (min-width: 768px) {
+      .quiz-card {
+        padding: 28px;
+      }
+    }
+
+    .quiz-question-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 18px;
+    }
+
+    .quiz-options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option-btn {
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      text-align: left;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-option-btn:hover:not(:disabled) {
+      border-color: var(--med-blue);
+      background-color: var(--med-blue-bg);
+    }
+
+    .quiz-option-btn:disabled {
+      cursor: default;
+    }
+
+    .quiz-option-btn.correct {
+      background-color: var(--safe-green-bg);
+      border-color: var(--safe-green);
+      color: #14532D;
+    }
+
+    .quiz-option-btn.wrong {
+      background-color: var(--sos-red-bg);
+      border-color: var(--sos-red);
+      color: #7F1D1D;
+    }
+
+    .option-letter {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-full);
+      background-color: var(--bg-subtle);
+      font-size: 0.85rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .quiz-explanation {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--med-blue-bg);
+      border: 1px solid var(--med-blue-border);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .quiz-next-wrap {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* ==========================================================================
+       9. COURSES & B2B FREEMIUM CATALOG
+       ========================================================================== */
+    .freemium-pledge {
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      background-color: var(--safe-green-bg);
+      border: 1.5px solid var(--safe-green-border);
+      color: #14532D;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .plans-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .plan-card {
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .plan-card.featured {
+      border-color: var(--med-blue);
+      box-shadow: var(--shadow-md);
+    }
+
+    .plan-card.free-plan {
+      border-color: var(--safe-green-border);
+    }
+
+    .plan-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .plan-tag.free {
+      background-color: var(--safe-green-bg);
+      color: var(--safe-green);
+    }
+
+    .plan-tag.pro {
+      background-color: var(--med-blue-bg);
+      color: var(--med-blue);
+    }
+
+    .plan-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .plan-price {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 12px;
+    }
+
+    .plan-price span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .btn-plan {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-plan.primary {
+      background-color: var(--med-blue);
+      color: #FFFFFF;
+    }
+
+    .btn-plan.primary:hover {
+      background-color: var(--med-blue-hover);
+    }
+
+    .btn-plan.active-free {
+      background-color: var(--safe-green-bg);
+      color: var(--safe-green);
+      border: 1.5px solid var(--safe-green-border);
+      cursor: default;
+    }
+
+    /* ==========================================================================
+       10. MODALS (SOS 112/103, QR SIMULATOR, B2B ORDER) & TOAST
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(15, 23, 42, 0.62);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 520px;
+      background-color: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-modal);
+      overflow: hidden;
+      margin: auto;
+    }
+
+    .modal-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-header.sos-header {
+      background-color: var(--sos-red);
+      color: #FFFFFF;
+      border-bottom: none;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .btn-close-modal {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
+
+    .btn-close-modal:hover {
+      background-color: rgba(15, 23, 42, 0.08);
+    }
+
+    .modal-header.sos-header .btn-close-modal:hover {
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    /* SOS Direct Dial Buttons */
+    .sos-dial-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    @media (min-width: 460px) {
+      .sos-dial-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .dial-card {
+      min-height: 76px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--sos-red);
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      transition: background-color var(--transition-fast);
+    }
+
+    .dial-card:hover {
+      background-color: var(--sos-red-hover);
+    }
+
+    .dial-card.ambulance {
+      background-color: #0F172A;
+    }
+
+    .dial-card.ambulance:hover {
+      background-color: #1E293B;
+    }
+
+    .dial-number {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .dial-label {
+      font-size: 0.82rem;
+      opacity: 0.92;
+    }
+
+    .dispatcher-box {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      margin-bottom: 14px;
+    }
+
+    .dispatcher-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--safe-green);
+      flex-shrink: 0;
+    }
+
+    .geo-bar {
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background-color: var(--med-blue-bg);
+      border: 1px solid var(--med-blue-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+    }
+
+    /* QR Preset Buttons */
+    .qr-preset-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .qr-preset-btn {
+      width: 100%;
+      min-height: 64px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--bg-surface);
+      border: 1.5px solid var(--border-color);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .qr-preset-btn:hover {
+      border-color: var(--med-blue);
+      background-color: var(--med-blue-bg);
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border-strong);
+      background-color: var(--bg-surface);
+      font-size: 0.98rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--med-blue);
+    }
+
+    .form-error {
+      color: var(--sos-red);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    /* Non-blocking Toast Notification */
+    .toast-msg {
+      position: fixed;
+      bottom: calc(var(--bottom-nav-height) + 14px);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 80;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      background-color: #0F172A;
+      color: #FFFFFF;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      pointer-events: none;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    @media (min-width: 768px) {
+      .toast-msg {
+        bottom: 24px;
+      }
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       STICKY HEADER + DESKTOP NAVIGATION
+       ======================================================================== -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="brand-group">
+        <button type="button" class="brand-logo" id="brandHomeBtn" aria-label="FirstAid KZ">
+          <span class="brand-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+          </span>
+          <span class="brand-text-wrap">
+            <span class="brand-name">FirstAid KZ</span>
+            <span class="offline-badge" id="offlineBadge">
+              <span class="offline-dot"></span>
+              <span id="offlineBadgeText">Offline Ready / Офлайн дайын</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <div class="lang-switch" role="group" aria-label="Language selector">
+          <button type="button" class="lang-btn active" data-lang="ru" id="langBtnRu">RU</button>
+          <button type="button" class="lang-btn" data-lang="kz" id="langBtnKz">KZ</button>
+        </div>
+
+        <button type="button" class="btn-sos" id="openSosBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>SOS 112 / 103</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Desktop Sub-Navigation -->
+    <nav class="desktop-nav" aria-label="Основная навигация">
+      <div class="container desktop-nav-list">
+        <button type="button" class="desktop-tab active" data-tab="emergency" id="deskTabEmergency">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span data-i18n="navEmergency">Экстренная помощь</span>
+        </button>
+        <button type="button" class="desktop-tab" data-tab="quiz" id="deskTabQuiz">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span data-i18n="navQuiz">Проверка знаний</span>
+        </button>
+        <button type="button" class="desktop-tab" data-tab="courses" id="deskTabCourses">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <span data-i18n="navCourses">Курсы и Школам</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       MAIN APPLICATION WORKSPACE
+       ======================================================================== -->
+  <main class="main-content container">
+
+    <!-- TAB 1: EMERGENCY SCENARIOS & STEP PLAYER -->
+    <section class="view-section active" id="viewEmergency" aria-labelledby="emergencyHeading">
+      <!-- Scenario Selection View -->
+      <div id="scenarioListView">
+        <div class="section-header">
+          <h1 class="section-title" id="emergencyHeading" data-i18n="heroTitle">Что произошло? Выберите ситуацию</h1>
+          <p class="section-subtitle" data-i18n="heroSubtitle">Пошаговый маршрут первой помощи за 2 касания • Без ИИ-диагнозов</p>
+        </div>
+
+        <!-- QR Code First-Aid Kit Simulator Button -->
+        <button type="button" class="qr-banner-btn" id="openQrModalBtn">
+          <span class="qr-banner-left">
+            <span class="qr-icon-box" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h2M20 14v2"/>
+              </svg>
+            </span>
+            <span>
+              <span class="qr-banner-title" data-i18n="qrBtnTitle">QR-код с аптечки (Симулятор перехода)</span><br/>
+              <span class="qr-banner-desc" data-i18n="qrBtnDesc">Проверка быстрого открытия протокола со школьной или спортивной аптечки</span>
+            </span>
+          </span>
+          <span class="qr-banner-pill" data-i18n="qrBtnAction">Сканировать</span>
+        </button>
+
+        <!-- 8 Anti-Stress Cards Grid -->
+        <div class="scenarios-grid" id="scenariosGrid"></div>
+      </div>
+
+      <!-- Step-by-Step Decision Tree Player View -->
+      <div id="stepPlayerView" class="player-wrapper" style="display: none;">
+        <div class="player-top-bar">
+          <button type="button" class="btn-back-list" id="backToScenariosBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span data-i18n="backToAll">Все ситуации</span>
+          </button>
+          <span class="step-counter-pill" id="stepCounterPill">Шаг 1 из 4</span>
+        </div>
+
+        <div class="qr-context-strip" id="qrContextStrip" style="display: none;"></div>
+
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" id="stepProgressBar">
+          <div class="progress-fill" id="stepProgressFill" style="width: 25%;"></div>
+        </div>
+
+        <article class="step-card" id="stepCardContainer"></article>
+      </div>
+    </section>
+
+    <!-- TAB 2: EDTECH KNOWLEDGE CHECK (QUIZ) -->
+    <section class="view-section" id="viewQuiz" aria-labelledby="quizHeading">
+      <div class="quiz-wrapper">
+        <div class="section-header">
+          <h1 class="section-title" id="quizHeading" data-i18n="quizTitle">Проверка знаний первой помощи</h1>
+          <p class="section-subtitle" data-i18n="quizSubtitle">5 практических ситуаций для закрепления алгоритмов до стрессовой ситуации</p>
+        </div>
+
+        <div class="quiz-stats-bar">
+          <span style="font-weight: 700; font-size: 0.92rem;" id="quizProgressLabel">Вопрос 1 из 5</span>
+          <span class="best-score-badge" id="bestScoreBadge">Лучший результат: 0 / 5</span>
+        </div>
+
+        <div class="quiz-card" id="quizCardContainer"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: COURSES & B2B FREEMIUM CATALOG -->
+    <section class="view-section" id="viewCourses" aria-labelledby="coursesHeading">
+      <div class="section-header">
+        <h1 class="section-title" id="coursesHeading" data-i18n="coursesTitle">Курсы и доступ для школ</h1>
+        <p class="section-subtitle" data-i18n="coursesSubtitle">Обучение семей, учеников и спортивных секций с печатными QR-метками на аптечки</p>
+      </div>
+
+      <div class="freemium-pledge">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="flex-shrink:0; margin-top:2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        <div>
+          <strong style="display:block; margin-bottom:2px;" data-i18n="pledgeTitle">Экстренная помощь и офлайн-протоколы всегда бесплатны (0 ₸)</strong>
+          <span style="font-size:0.9rem;" data-i18n="pledgeDesc">Мы принципиально не ставим платный барьер на спасение жизни. Оплачиваются только видеокурсы и B2B-инструменты для школ.</span>
+        </div>
+      </div>
+
+      <div class="plans-grid" id="plansGrid"></div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       MOBILE FIXED BOTTOM TAB BAR
+       ======================================================================== -->
+  <nav class="mobile-bottom-nav" aria-label="Мобильная навигация">
+    <button type="button" class="mobile-tab active" data-tab="emergency" id="mobTabEmergency">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <span data-i18n="navEmergency">Экстренная помощь</span>
+    </button>
+    <button type="button" class="mobile-tab" data-tab="quiz" id="mobTabQuiz">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span data-i18n="navQuiz">Проверка знаний</span>
+    </button>
+    <button type="button" class="mobile-tab" data-tab="courses" id="mobTabCourses">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      <span data-i18n="navCourses">Курсы и Школам</span>
+    </button>
+  </nav>
+
+  <!-- ========================================================================
+       MODAL 1: SOS 112 / 103 EMERGENCY QUICK CALL
+       ======================================================================== -->
+  <div class="modal-backdrop" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header sos-header">
+        <h2 class="modal-title" id="sosModalTitle" data-i18n="sosModalTitle">Экстренный вызов служб РК</h2>
+        <button type="button" class="btn-close-modal" data-close-modal="sosModal" aria-label="Закрыть">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="sos-dial-grid">
+          <a href="tel:112" class="dial-card">
+            <span class="dial-number">112</span>
+            <span class="dial-label" data-i18n="sos112Label">Единая служба спасения</span>
+          </a>
+          <a href="tel:103" class="dial-card ambulance">
+            <span class="dial-number">103</span>
+            <span class="dial-label" data-i18n="sos103Label">Скорая медицинская помощь</span>
+          </a>
+        </div>
+
+        <div class="dispatcher-box">
+          <div class="dispatcher-title" data-i18n="dispatcherTitle">Что сказать диспетчеру (отмечайте по ходу):</div>
+          <label class="checklist-item">
+            <input type="checkbox" />
+            <span data-i18n="dispPoint1">1. Точный адрес (улица, дом, подъезд, этаж или ориентир)</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox" />
+            <span data-i18n="dispPoint2">2. Что произошло (кровотечение, ожог, потеря сознания)</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox" />
+            <span data-i18n="dispPoint3">3. Количество пострадавших и примерный возраст</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox" />
+            <span data-i18n="dispPoint4">4. В сознании ли человек и дышит ли он сейчас</span>
+          </label>
+        </div>
+
+        <div class="geo-bar">
+          <div>
+            <strong style="display:block; color:var(--text-primary);" data-i18n="geoLabel">Координаты (Алматы / GPS):</strong>
+            <span id="geoCoordsText" style="font-variant-numeric: tabular-nums; color:var(--text-secondary);">43.2389° N, 76.8897° E</span>
+          </div>
+          <button type="button" class="btn-timer" id="copyGeoBtn" data-i18n="copyGeoBtn">Копировать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: QR-CODE FIRST-AID KIT SIMULATOR
+       ======================================================================== -->
+  <div class="modal-backdrop" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="qrModalTitle" data-i18n="qrModalTitle">Симулятор QR-наклейки аптечки</h2>
+        <button type="button" class="btn-close-modal" data-close-modal="qrModal" aria-label="Закрыть">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.92rem; color:var(--text-secondary); margin-bottom:14px;" data-i18n="qrModalDesc">
+          Выберите наклейку на аптечке, чтобы проверить мгновенный переход в нужный протокол без поиска:
+        </p>
+        <div class="qr-preset-list" id="qrPresetList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: COURSE PRE-ORDER / B2B SCHOOL DEMO REQUEST
+       ======================================================================== -->
+  <div class="modal-backdrop" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="orderModalTitle" data-i18n="orderModalTitle">Оформление доступа</h2>
+        <button type="button" class="btn-close-modal" data-close-modal="orderModal" aria-label="Закрыть">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="orderModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Non-blocking Toast Message -->
+  <div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
+
+  <!-- ========================================================================
+       VANILLA JAVASCRIPT APPLICATION LOGIC & BILINGUAL APP_DATA
+       ======================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ----------------------------------------------------------------------
+         1. COMPLETE BILINGUAL DATA DICTIONARY (RU / KZ)
+         ---------------------------------------------------------------------- */
+      const APP_DATA = {
+        ru: {
+          ui: {
+            offlineBadge: 'Offline Ready • Офлайн готов',
+            navEmergency: 'Экстренная помощь',
+            navQuiz: 'Проверка знаний',
+            navCourses: 'Курсы и Школам',
+            heroTitle: 'Что произошло? Выберите ситуацию',
+            heroSubtitle: 'Пошаговый маршрут первой помощи за 2 касания • Без ИИ-диагнозов',
+            qrBtnTitle: 'QR-код с аптечки (Симулятор перехода)',
+            qrBtnDesc: 'Мгновенное открытие протокола со школьной или спортивной аптечки',
+            qrBtnAction: 'Сканировать',
+            backToAll: 'Все ситуации',
+            stepCounter: 'Шаг {current} из {total}',
+            dontTitle: 'Чего делать НЕЛЬЗЯ',
+            btnPrev: 'Назад',
+            btnNext: 'Следующий шаг',
+            btnFinish: 'Завершить алгоритм',
+            completionTitle: 'Алгоритм выполнен. Следите за состоянием пострадавшего до приезда медиков.',
+            completionCall103: 'Позвонить 103',
+            completionHome: 'Вернуться к списку',
+            trustVerified: 'Проверено специалистом (Не ИИ-диагноз)',
+            trustProtocol: 'Протокол {id} • {ver}',
+            trustDate: 'Проверено: {date}',
+            timerStart: 'Запустить таймер ({sec} сек)',
+            timerRunning: 'Идет отсчет: {sec} сек',
+            timerDone: 'Время вышло — перейдите к следующему шагу',
+            sosModalTitle: 'Экстренный вызов служб РК',
+            sos112Label: 'Единая служба спасения',
+            sos103Label: 'Скорая медицинская помощь',
+            dispatcherTitle: 'Что сказать диспетчеру (отмечайте по ходу):',
+            dispPoint1: '1. Точный адрес (улица, дом, подъезд, этаж или ориентир)',
+            dispPoint2: '2. Что произошло (кровотечение, ожог, потеря сознания)',
+            dispPoint3: '3. Количество пострадавших и примерный возраст',
+            dispPoint4: '4. В сознании ли человек и дышит ли он сейчас',
+            geoLabel: 'Координаты для диспетчера:',
+            copyGeoBtn: 'Копировать',
+            copiedToast: 'Координаты скопированы в буфер обмена',
+            offlineToast: 'Все 8 протоколов сохранены в памяти устройства для работы без интернета',
+            qrModalTitle: 'Симулятор QR-наклейки аптечки',
+            qrModalDesc: 'Выберите наклейку на аптечке, чтобы открыть нужный протокол за 1 касание:',
+            qrRoutedBanner: 'Открыто по QR-метке: {label}',
+            quizTitle: 'Проверка знаний первой помощи',
+            quizSubtitle: '5 практических ситуаций для закрепления навыков до стрессовой ситуации',
+            quizProgress: 'Вопрос {current} из {total}',
+            bestScore: 'Лучший результат: {score} / {total}',
+            quizNextBtn: 'Следующий вопрос',
+            quizResultBtn: 'Показать результат',
+            quizResultTitle: 'Тест завершен! Ваш результат: {score} из {total}',
+            quizResultGood: 'Отличный уровень подготовки! Вы уверенно знаете базовые правила безопасности.',
+            quizResultMid: 'Хороший старт, но стоит повторить ключевые запреты в карточках протоколов.',
+            quizRestartBtn: 'Пройти тест заново',
+            coursesTitle: 'Курсы и доступ для школ',
+            coursesSubtitle: 'Обучение семей, учеников и спортивных секций с QR-наклейками для аптечек',
+            pledgeTitle: 'Экстренная помощь и офлайн-протоколы всегда бесплатны (0 ₸)',
+            pledgeDesc: 'Мы принципиально не ставим платный барьер на спасение жизни. Оплачиваются только видеокурсы и B2B-инструменты для школ.',
+            orderModalTitle: 'Заявка на обучение / B2B-доступ',
+            formPlanLabel: 'Выбранный тариф',
+            formNameLabel: 'Ваше имя',
+            formNamePlaceholder: 'Например: Айгерим Серикова',
+            formOrgLabel: 'Школа, секция или организация (необязательно)',
+            formOrgPlaceholder: 'Например: Школа-лицей №45, г. Алматы',
+            formPhoneLabel: 'Телефон (WhatsApp / звонок)',
+            formPhonePlaceholder: '+7 (700) 000-00-00',
+            formSubmitBtn: 'Отправить заявку',
+            formErrorMsg: 'Пожалуйста, укажите ваше имя и корректный номер телефона.',
+            orderSuccessTitle: 'Заявка №{num} принята!',
+            orderSuccessText: 'Менеджер образовательного отдела FirstAid KZ свяжется с вами в течение 15 минут и отправит демо-доступ.'
+          },
+
+          qrPresets: [
+            {
+              label: 'Школа №45 • Спортзал • Аптечка #2',
+              targetText: 'Открыть протокол: Перелом или сильный ушиб',
+              scenarioId: 'fracture'
+            },
+            {
+              label: 'Лицей №134 • Столовая • Аптечка #1',
+              targetText: 'Открыть протокол: Подавился (приём Геймлиха)',
+              scenarioId: 'choking'
+            },
+            {
+              label: 'Секция плавания • Медпункт',
+              targetText: 'Открыть протокол: Потеря сознания',
+              scenarioId: 'unconscious'
+            },
+            {
+              label: 'Домашняя аптечка • Кухня',
+              targetText: 'Открыть протокол: Термический ожог',
+              scenarioId: 'burn'
+            }
+          ],
+
+          scenarios: [
+            {
+              id: 'bleeding',
+              code: 'FA-01',
+              version: 'v2.4',
+              reviewDate: '15.10.2026',
+              urgency: 'urgent',
+              icon: 'bleeding',
+              title: 'Сильное кровотечение',
+              hint: 'Порез, глубокая рана, алая или темная кровь',
+              steps: [
+                {
+                  heading: 'Защитите руки и оцените рану',
+                  instruction: 'Наденьте медицинские перчатки из аптечки или оберните руку чистым полиэтиленовым пакетом. Освободите рану от верхней одежды, чтобы видеть источник крови.',
+                  dont: 'Не промывайте глубокую рану водой и не пытайтесь извлечь из нее осколки стекла или металла.',
+                  branch: {
+                    question: 'Какой характер кровотечения вы видите?',
+                    options: [
+                      {
+                        label: 'Темная кровь течет ровно',
+                        extraInstruction: 'Это венозное или капиллярное кровотечение. Достаточно прямого сильного давления и давящей повязки.'
+                      },
+                      {
+                        label: 'Алая кровь бьет пульсирующей струей',
+                        extraInstruction: 'Признак артериального кровотечения! Срочно прижмите артерию выше раны и вызовите 103.'
+                      }
+                    ]
+                  }
+                },
+                {
+                  heading: 'Прямое давление на рану',
+                  instruction: 'Плотно прижмите к ране стерильную салфетку, чистый бинт или сложенную в несколько слоев чистую ткань. Давите двумя руками непрерывно.',
+                  dont: 'Не отпускайте давление каждые 10 секунд, чтобы «посмотреть, остановилась ли кровь» — это разрушает сгусток.'
+                },
+                {
+                  heading: 'Наложите давящую повязку',
+                  instruction: 'Поверх салфетки туго прибинтуйте рулон неразмотанного бинта как давящий валик. Если кровь просачивается, наложите второй слой повязки поверх первого.',
+                  dont: 'Не снимайте пропитавшуюся кровью первую повязку — накладывайте новые слои строго поверх нее.'
+                },
+                {
+                  heading: 'Контроль состояния и вызов 103',
+                  instruction: 'Уложите пострадавшего, приподнимите поврежденную конечность (если нет перелома) и укройте человека от холода. Дождитесь бригаду скорой помощи 103.',
+                  dont: 'Не накладывайте жгут на шею, туловище или без крайней необходимости при обычном венозном кровотечении.'
+                }
+              ]
+            },
+            {
+              id: 'burn',
+              code: 'FA-02',
+              version: 'v2.5',
+              reviewDate: '18.10.2026',
+              urgency: 'urgent',
+              icon: 'burn',
+              title: 'Термический ожог',
+              hint: 'Кипяток, пар, горячая посуда, открытый огонь',
+              steps: [
+                {
+                  heading: 'Прекратите действие высокой температуры',
+                  instruction: 'Уберите источник тепла или отведите пострадавшего в безопасное место. Аккуратно снимите кольца, часы и браслеты рядом с ожогом до начала отека.',
+                  dont: 'Не отрывайте прилипшую к коже одежду — аккуратно обрежьте ткань вокруг раны.'
+                },
+                {
+                  heading: 'Охлаждайте прохладной водой 15 минут',
+                  instruction: 'Подставьте обожженный участок под струю прохладной (не ледяной) водопроводной воды на 15–20 минут, чтобы остановить повреждение глубоких тканей.',
+                  timerSec: 60,
+                  dont: 'Не прикладывайте лед напрямую к коже, не мажьте ожог маслом, сметаной, пантенолом в первые минуты или мочой.'
+                },
+                {
+                  heading: 'Закройте чистой нетугой повязкой',
+                  instruction: 'После охлаждения накройте ожог стерильной марлевой салфеткой или чистой хлопковой тканью без ворса, чтобы защитить кожу от инфекции.',
+                  dont: 'Не вскрывайте и не прокалывайте образовавшиеся волдыри — это открывает ворота для тяжелой инфекции.'
+                },
+                {
+                  heading: 'Оцените площадь и вызовите 103',
+                  instruction: 'Дайте пострадавшему пить чистую воду небольшими глотками. Если ожог больше ладони пострадавшего, затронуто лицо, кисти или пострадал ребенок — срочно звоните 103.',
+                  dont: 'Не используйте спиртовые растворы, йод, зеленку или вату на обожженную поверхность.'
+                }
+              ]
+            },
+            {
+              id: 'unconscious',
+              code: 'FA-03',
+              version: 'v2.6',
+              reviewDate: '20.10.2026',
+              urgency: 'urgent',
+              icon: 'unconscious',
+              title: 'Потеря сознания',
+              hint: 'Человек упал, не реагирует на голос и прикосновения',
+              steps: [
+                {
+                  heading: 'Убедитесь в безопасности и проверьте реакцию',
+                  instruction: 'Осмотритесь вокруг (нет ли оголенных проводов, газа или машин). Осторожно встряхните человека за плечи и громко спросите: «Вы меня слышите? Вам нужна помощь?».',
+                  dont: 'Не бейте человека по щекам и не пытайтесь брызгать водой в лицо.'
+                },
+                {
+                  heading: 'Откройте дыхательные пути и проверьте дыхание',
+                  instruction: 'Положите одну руку на лоб, двумя пальцами другой руки поднимите подбородок и запрокиньте голову. Наклонитесь к лицу и 10 секунд слушайте дыхание и следите за грудной клеткой.',
+                  timerSec: 10,
+                  dont: 'Не подкладывайте под голову подушку, сумку или свернутую куртку — это перекрывает дыхательные пути.',
+                  branch: {
+                    question: 'Человек нормально дышит (минимум 2 вдоха за 10 секунд)?',
+                    options: [
+                      {
+                        label: 'Да, дышит нормально',
+                        extraInstruction: 'Отлично! Переведите человека в устойчивое боковое положение на следующем шаге.'
+                      },
+                      {
+                        label: 'Нет дыхания / редкие хрипы',
+                        extraInstruction: 'Срочно звоните 103 на громкой связи и начинайте непрямой массаж сердца (30 нажатий в центр груди).'
+                      }
+                    ]
+                  }
+                },
+                {
+                  heading: 'При наличии дыхания — поверните на бок',
+                  instruction: 'Поверните пострадавшего на бок (устойчивое восстановительное положение), согните верхнюю ногу в колене для упора и слегка запрокиньте голову назад, чтобы язык или рвота не перекрыли дыхание.',
+                  dont: 'Не оставляйте человека без сознания лежать на спине и не уходите от него.'
+                },
+                {
+                  heading: 'Вызовите 103 и контролируйте дыхание',
+                  instruction: 'Позвоните 103, назовите точный адрес и проверяйте наличие дыхания каждую минуту до прибытия бригады скорой помощи.',
+                  dont: 'Не пытайтесь влить воду, лекарства или давать нюхать нашатырный спирт человеку без сознания.'
+                }
+              ]
+            },
+            {
+              id: 'choking',
+              code: 'FA-04',
+              version: 'v2.4',
+              reviewDate: '12.10.2026',
+              urgency: 'urgent',
+              icon: 'choking',
+              title: 'Подавился (приём Геймлиха)',
+              hint: 'Человек схватился за горло, не может говорить и дышать',
+              steps: [
+                {
+                  heading: 'Определите, может ли человек кашлять',
+                  instruction: 'Спросите: «Вы подавились?». Если человек может громко кашлять и говорить — поощряйте его кашлять самостоятельно. Если не может издать ни звука и синеет — действуйте немедленно.',
+                  dont: 'Не хлопайте по спине человека, который стоит вертикально и активно откашливается сам.',
+                  branch: {
+                    question: 'Возраст пострадавшего?',
+                    options: [
+                      {
+                        label: 'Взрослый или ребенок старше 1 года',
+                        extraInstruction: 'Применяйте наклоны с ударами по спине и приём Геймлиха (толчки в живот).'
+                      },
+                      {
+                        label: 'Младенец до 1 года',
+                        extraInstruction: 'Приём Геймлиха в живот запрещен! Положите младенца животом на предплечье головой вниз: 5 хлопков между лопаток и 5 нажатий двумя пальцами на грудину.'
+                      }
+                    ]
+                  }
+                },
+                {
+                  heading: '5 скользящих ударов между лопаток',
+                  instruction: 'Встаньте сбоку и чуть позади, наклоните корпус пострадавшего сильно вперед. Основанием ладони нанесите 5 резких скользящих ударов между лопатками.',
+                  dont: 'Не наносите удары, когда спина пострадавшего прямая — предмет может провалиться глубже.'
+                },
+                {
+                  heading: '5 брюшных толчков (приём Геймлиха)',
+                  instruction: 'Обхватите человека сзади. Сожмите одну руку в кулак и приложите большим пальцем к животу строго посередине между пупком и ребрами. Обхватите кулак второй рукой и сделайте 5 резких толчков внутрь и вверх.',
+                  dont: 'Не давите на нижние ребра или мечевидный отросток грудины — это может травмировать внутренние органы.'
+                },
+                {
+                  heading: 'Чередуйте серии 5 + 5 до выхода предмета',
+                  instruction: 'Чередуйте 5 ударов по спине и 5 толчков в живот до освобождения дыхательных путей. Если человек потерял сознание — опустите его на пол, вызовите 103 и начните сердечно-легочную реанимацию.',
+                  dont: 'Не пытайтесь вслепую достать предмет пальцами из глотки, если вы его не видите.'
+                }
+              ]
+            },
+            {
+              id: 'fracture',
+              code: 'FA-05',
+              version: 'v2.3',
+              reviewDate: '10.10.2026',
+              urgency: 'clinical',
+              icon: 'fracture',
+              title: 'Перелом или сильный ушиб',
+              hint: 'Резкая боль после падения, отек, неестественное положение',
+              steps: [
+                {
+                  heading: 'Обеспечьте полный покой конечности',
+                  instruction: 'Помогите пострадавшему занять удобное положение, в котором боль минимальна. Зафиксируйте поврежденную руку или ногу в том положении, в каком она находится.',
+                  dont: 'Категорически запрещено самостоятельно вправлять кость, дергать или выпрямлять деформированную конечность.'
+                },
+                {
+                  heading: 'При открытом переломе — закройте рану',
+                  instruction: 'Если видна рана или кость, накройте ее стерильной салфеткой. При сильном кровотечении прижмите края раны вокруг кости без давления на сам обломок.',
+                  dont: 'Не пытайтесь протолкнуть выступающий обломок кости обратно в рану.'
+                },
+                {
+                  heading: 'Приложите холод через ткань',
+                  instruction: 'Оберните пакет со льдом или холодную бутылку воды в полотенце и приложите к месту отека на 15 минут для уменьшения боли и внутреннего кровоизлияния.',
+                  dont: 'Не прикладывайте грелку и не растирайте место ушиба согревающими мазями.'
+                },
+                {
+                  heading: 'Иммобилизация и вызов 103',
+                  instruction: 'При необходимости транспортировки зафиксируйте два соседних сустава (выше и ниже перелома) с помощью шины или подручных средств. При травме ноги, бедра или позвоночника дождитесь скорую 103 на месте.',
+                  dont: 'Не заставляйте человека наступать на поврежденную ногу, «чтобы проверить, нет ли перелома».'
+                }
+              ]
+            },
+            {
+              id: 'heatstroke',
+              code: 'FA-06',
+              version: 'v2.2',
+              reviewDate: '05.10.2026',
+              urgency: 'clinical',
+              icon: 'heatstroke',
+              title: 'Тепловой / солнечный удар',
+              hint: 'Головокружение, горячая кожа, слабость на жаре или в душном зале',
+              steps: [
+                {
+                  heading: 'Переместите в тень или прохладное помещение',
+                  instruction: 'Немедленно уведите или перенесите пострадавшего с солнца в тень, прохладную комнату с кондиционером или сквозняком. Уложите человека на спину и слегка приподнимите ноги.',
+                  dont: 'Не оставляйте пострадавшего стоять на ногах — возможен внезапный обморок и травма головы.'
+                },
+                {
+                  heading: 'Освободите от тесной одежды',
+                  instruction: 'Расстегните воротник, снимите ремень, обувь и лишнюю синтетическую одежду, чтобы улучшить теплоотдачу.',
+                  dont: 'Не укутывайте человека влажной простыней целиком без притока воздуха — это создает эффект парника.'
+                },
+                {
+                  heading: 'Начните мягкое охлаждение тела',
+                  instruction: 'Протирайте лицо, шею, подмышки и паховую область прохладной водой, обмахивайте человека для испарения влаги.',
+                  dont: 'Не обливайте человека ледяной водой — резкий спазм сосудов остановит отвод тепла изнутри.'
+                },
+                {
+                  heading: 'Восполните жидкость (только в сознании)',
+                  instruction: 'Если человек в ясном сознании и его не тошнит, давайте пить прохладную воду маленькими глотками. При спутанности сознания или рвоте — срочно звоните 103.',
+                  dont: 'Не давайте сладкую газировку, кофе, энергетики или алкоголь.'
+                }
+              ]
+            },
+            {
+              id: 'poisoning',
+              code: 'FA-07',
+              version: 'v2.3',
+              reviewDate: '08.10.2026',
+              urgency: 'clinical',
+              icon: 'poisoning',
+              title: 'Пищевое или бытовое отравление',
+              hint: 'Тошнота, рвота, боль в животе, контакт с бытовой химией',
+              steps: [
+                {
+                  heading: 'Установите причину и сохраните упаковку',
+                  instruction: 'Выясните, что именно съел или выпил человек (испорченная еда, лекарства, бытовая химия). Сохраните упаковку или остатки вещества для врачей скорой помощи.',
+                  dont: 'Не выбрасывайте блистеры от таблеток или бутылку от средства до приезда медиков.'
+                },
+                {
+                  heading: 'Оцените тип вещества перед любыми действиями',
+                  instruction: 'Если отравление вызвано некачественной едой и человек в сознании — дайте выпить 1–2 стакана чистой теплой воды и энтеросорбент (активированный уголь или смекту).',
+                  dont: 'НИКОГДА не вызывайте рвоту при отравлении кислотами, щелочами, бензином, бытовой химией или если человек без сознания!'
+                },
+                {
+                  heading: 'Обеспечьте дробное питье и покой',
+                  instruction: 'Давайте чистую воду по 1–2 столовые ложки каждые 5–10 минут, чтобы избежать обезвоживания и не спровоцировать повторную рвоту. Уложите человека на бок.',
+                  dont: 'Не давайте противодиарейные препараты (лоперамид) — они задерживают токсины внутри кишечника.'
+                },
+                {
+                  heading: 'Срочно вызовите 103 при опасных симптомах',
+                  instruction: 'Немедленно звоните 103, если отравление произошло у ребенка, появились судороги, двоение в глазах, затруднение дыхания, высокая температура или кровь в рвоте.',
+                  dont: 'Не давайте молоко при отравлении жирорастворимыми ядами и не используйте марганцовку.'
+                }
+              ]
+            },
+            {
+              id: 'tickbite',
+              code: 'FA-08',
+              version: 'v2.2',
+              reviewDate: '14.10.2026',
+              urgency: 'clinical',
+              icon: 'tickbite',
+              title: 'Укус клеща или насекомого',
+              hint: 'Обнаружен присосавшийся клещ или резкий отек от укуса осы',
+              steps: [
+                {
+                  heading: 'Оцените аллергическую реакцию',
+                  instruction: 'При укусе осы или пчелы проверьте, нет ли отека губ, языка, хриплого дыхания или головокружения. При признаках удушья немедленно звоните 103.',
+                  dont: 'Не выдавливайте жало пчелы пальцами — аккуратно соскоблите его краем пластиковой карты.'
+                },
+                {
+                  heading: 'Аккуратно удалите клеща выкручиванием',
+                  instruction: 'Захватите клеща специальным выкручивателем (тик-твистером) или тонким пинцетом как можно ближе к коже и плавно выкручивайте вокруг оси без рывков.',
+                  dont: 'Не мажьте клеща маслом, кремом, бензином или лаком — задыхаясь, он впрыснет в ранку больше слюны с инфекцией.'
+                },
+                {
+                  heading: 'Обработайте место укуса антисептиком',
+                  instruction: 'После извлечения клеща промойте кожу водой с мылом и обработайте хлоргексидином или спиртовым антисептиком. Тщательно вымойте руки.',
+                  dont: 'Не раздавливайте снятого клеща голыми пальцами.'
+                },
+                {
+                  heading: 'Обратитесь в травмпункт в течение 72 часов',
+                  instruction: 'Поместите клеща в закрытый контейнер с влажной ваткой для анализа в лаборатории и обратитесь в медучреждение (особенно в эндемичных районах Алматы и ВКО) для профилактики энцефалита.',
+                  dont: 'Не игнорируйте повышение температуры или красное кольцевидное пятно в течение 30 дней после укуса.'
+                }
+              ]
+            }
+          ],
+
+          quiz: [
+            {
+              question: '1. Ребенок опрокинул на руку чашку с горячим чаем. Что нужно сделать в первую очередь?',
+              options: [
+                'Смазать кожу маслом, детским кремом или сметаной',
+                'Охлаждать место ожога под прохладной проточной водой 15–20 минут',
+                'Проколоть появившийся волдырь стерильной иглой'
+              ],
+              correctIndex: 1,
+              explanation: 'Прохладная проточная вода в течение 15–20 минут останавливает распространение тепла в глубокие слои кожи. Масло создает пленку и удерживает жар внутри.'
+            },
+            {
+              question: '2. Человек в столовой схватился за горло, не может говорить и не издает ни звука. Ваши действия?',
+              options: [
+                'Дать ему выпить стакан воды',
+                'Наклонить вперед и чередовать 5 ударов между лопаток и 5 толчков в живот (приём Геймлиха)',
+                'Положить его на спину и подложить подушку под голову'
+              ],
+              correctIndex: 1,
+              explanation: 'Полная непроходимость дыхательных путей требует немедленного чередования 5 скользящих ударов между лопаток при наклоне вперед и 5 толчков в живот выше пупка.'
+            },
+            {
+              question: '3. Вы обнаружили человека без сознания, но он нормально дышит. В какое положение его нужно перевести?',
+              options: [
+                'Оставить лежать ровно на спине до приезда 103',
+                'Посадить на стул и дать понюхать нашатырный спирт',
+                'Перевести в устойчивое боковое положение (на бок)'
+              ],
+              correctIndex: 2,
+              explanation: 'Устойчивое боковое положение предотвращает западение языка и попадание рвотных масс в дыхательные пути до прибытия скорой помощи.'
+            },
+            {
+              question: '4. При глубоком порезе руки первая марлевая повязка полностью пропиталась кровью. Как поступить?',
+              options: [
+                'Снять промокшую повязку и наложить новую сухую',
+                'Не снимая первую повязку, наложить поверх нее второй давящий слой и продолжать прямое давление',
+                'Промыть рану теплой водой с мылом'
+              ],
+              correctIndex: 1,
+              explanation: 'Снятие первой повязки отрывает формирующийся тромб и возобновляет сильное кровотечение. Новые слои накладываются строго поверх пропитавшихся.'
+            },
+            {
+              question: '5. После падения на физкультуре у ученика сильно опухла и деформировалась рука. Что делать ЗАПРЕЩЕНО?',
+              options: [
+                'Обеспечить неподвижность руки в текущем положении',
+                'Приложить холод через ткань на 15 минут',
+                'Самостоятельно выпрямлять руку или вправлять кость'
+              ],
+              correctIndex: 2,
+              explanation: 'Попытка вправить перелом или вывих без рентгена может привести к повреждению крупных сосудов, нервов и болевому шоку.'
+            }
+          ],
+
+          plans: [
+            {
+              id: 'free',
+              tag: 'Базовый доступ',
+              tagType: 'free',
+              title: 'Памятки / SOS / Офлайн-доступ',
+              price: '0 ₸',
+              period: 'Бесплатно навсегда',
+              featured: false,
+              isFree: true,
+              features: [
+                'Все 8 пошаговых протоколов первой помощи (RU / KZ)',
+                'Работа в полном офлайн-режиме без интернета',
+                'Кнопка быстрого вызова 112 / 103 и чек-лист диспетчера',
+                'Базовые тесты для самопроверки'
+              ],
+              btnText: 'Активно сейчас'
+            },
+            {
+              id: 'video',
+              tag: 'Для семьи и родителей',
+              tagType: 'pro',
+              title: 'Видеокурс «Основы первой помощи»',
+              price: '2 490 ₸',
+              period: 'единоразово',
+              featured: false,
+              isFree: false,
+              features: [
+                '12 коротких видеоуроков по 5 минут с врачами скорой помощи',
+                'Разбор бытовых травм дома, на кухне и на даче',
+                'Итоговый экзамен и именной электронный сертификат'
+              ],
+              btnText: 'Оформить курс'
+            },
+            {
+              id: 'workshop',
+              tag: 'Углубленный курс',
+              tagType: 'pro',
+              title: 'Тематический практикум',
+              price: '4 990 ₸',
+              period: 'единоразово',
+              featured: false,
+              isFree: false,
+              features: [
+                'Спецмодули: «Первая помощь детям», «Спорт и походы», «ДТП»',
+                'Интерактивные тренажеры принятия решений на время',
+                'Чек-лист сборки домашней и автомобильной аптечки РК'
+              ],
+              btnText: 'Выбрать практикум'
+            },
+            {
+              id: 'b2b',
+              tag: 'B2B для школ и секций',
+              tagType: 'pro',
+              title: 'Учебная группа (Школы / Спорт)',
+              price: '19 900 ₸',
+              period: 'за класс или команду / год',
+              featured: true,
+              isFree: false,
+              features: [
+                'Доступ до 35 учеников + кабинет преподавателя / тренера',
+                'Сводная статистика прохождения тестов по классу',
+                'Комплект водостойких QR-наклеек на школьные аптечки'
+              ],
+              btnText: 'Запросить демо для школы'
+            }
+          ]
+        },
+
+        kz: {
+          ui: {
+            offlineBadge: 'Offline Ready • Офлайн дайын',
+            navEmergency: 'Жедел көмек',
+            navQuiz: 'Білімді тексеру',
+            navCourses: 'Курстар және мектептерге',
+            heroTitle: 'Не болды? Жағдайды таңдаңыз',
+            heroSubtitle: '2 рет басу арқылы қадамдық алғашқы көмек маршруты • ЖИ-диагнозсыз',
+            qrBtnTitle: 'Аптечкадағы QR-код (Өту симуляторы)',
+            qrBtnDesc: 'Мектеп немесе спорт аптечкасынан хаттаманы жылдам ашуды тексеру',
+            qrBtnAction: 'Сканерлеу',
+            backToAll: 'Барлық жағдайлар',
+            stepCounter: '{current}-қадам (барлығы {total})',
+            dontTitle: 'Не істеуге БОЛМАЙДЫ',
+            btnPrev: 'Артқа',
+            btnNext: 'Келесі қадам',
+            btnFinish: 'Алгоритмді аяқтау',
+            completionTitle: 'Алгоритм орындалды. Дәрігерлер келгенше зардап шегушінің жағдайын бақылаңыз.',
+            completionCall103: '103-ке қоңырау шалу',
+            completionHome: 'Тізімге оралу',
+            trustVerified: 'Маман тексерген (ЖИ-диагноз емес)',
+            trustProtocol: 'Хаттама {id} • {ver}',
+            trustDate: 'Тексерілген күні: {date}',
+            timerStart: 'Таймерді қосу ({sec} сек)',
+            timerRunning: 'Кері санақ: {sec} сек',
+            timerDone: 'Уақыт аяқталды — келесі қадамға өтіңіз',
+            sosModalTitle: 'ҚР жедел қызметтерін шақыру',
+            sos112Label: 'Бірыңғай құтқару қызметі',
+            sos103Label: 'Жедел медициналық жәрдем',
+            dispatcherTitle: 'Диспетчерге не айту керек (белгілеп отырыңыз):',
+            dispPoint1: '1. Нақты мекенжай (көше, үй, кіреберіс, қабат немесе бағдар)',
+            dispPoint2: '2. Не болды (қан кету, күйік, есінен тану)',
+            dispPoint3: '3. Зардап шеккендер саны және шамамен жасы',
+            dispPoint4: '4. Адам есін біле ме және қазір тыныс алып жатыр ма',
+            geoLabel: 'Диспетчерге арналған координаттар:',
+            copyGeoBtn: 'Көшіру',
+            copiedToast: 'Координаттар алмасу буферіне көшірілді',
+            offlineToast: 'Барлық 8 хаттама интернетсіз жұмыс істеу үшін құрылғы жадында сақталған',
+            qrModalTitle: 'Аптечка QR-жапсырмасының симуляторы',
+            qrModalDesc: 'Қажетті хаттаманы 1 басу арқылы ашу үшін аптечка жапсырмасын таңдаңыз:',
+            qrRoutedBanner: 'QR-белгі арқылы ашылды: {label}',
+            quizTitle: 'Алғашқы көмек білімін тексеру',
+            quizSubtitle: 'Стресстік жағдайға дейін алгоритмдерді бекітуге арналған 5 практикалық жағдай',
+            quizProgress: '{current}-сұрақ (барлығы {total})',
+            bestScore: 'Үздік нәтиже: {score} / {total}',
+            quizNextBtn: 'Келесі сұрақ',
+            quizResultBtn: 'Нәтижені көрсету',
+            quizResultTitle: 'Тест аяқталды! Сіздің нәтижеңіз: {score} / {total}',
+            quizResultGood: 'Дайындық деңгейі өте жақсы! Сіз қауіпсіздіктің негізгі ережелерін сенімді білесіз.',
+            quizResultMid: 'Жақсы бастама, бірақ хаттама карталарындағы негізгі тыйымдарды қайталап шыққан жөн.',
+            quizRestartBtn: 'Тестті қайта тапсыру',
+            coursesTitle: 'Курстар және мектептерге қолжетімділік',
+            coursesSubtitle: 'Отбасыларды, оқушыларды және спорт секцияларын QR-жапсырмалармен оқыту',
+            pledgeTitle: 'Жедел көмек және офлайн-хаттамалар әрқашан тегін (0 ₸)',
+            pledgeDesc: 'Біз өмірді құтқаруға ақылы шектеу қоймаймыз. Тек бейнекурстар мен мектептерге арналған B2B-құралдар ғана ақылы.',
+            orderModalTitle: 'Оқуға / B2B-қолжетімділікке өтінім',
+            formPlanLabel: 'Таңдалған тариф',
+            formNameLabel: 'Сіздің аты-жөніңіз',
+            formNamePlaceholder: 'Мысалы: Әйгерім Серікова',
+            formOrgLabel: 'Мектеп, секция немесе ұйым (міндетті емес)',
+            formOrgPlaceholder: 'Мысалы: №45 мектеп-лицей, Алматы қ.',
+            formPhoneLabel: 'Телефон (WhatsApp / қоңырау)',
+            formPhonePlaceholder: '+7 (700) 000-00-00',
+            formSubmitBtn: 'Өтінім жіберу',
+            formErrorMsg: 'Аты-жөніңізді және дұрыс телефон нөмірін енгізіңіз.',
+            orderSuccessTitle: '№{num} өтінім қабылданды!',
+            orderSuccessText: 'FirstAid KZ білім беру бөлімінің менеджері 15 минут ішінде сізбен байланысып, демо-қолжетімділік жібереді.'
+          },
+
+          qrPresets: [
+            {
+              label: '№45 мектеп • Спортзал • Аптечка #2',
+              targetText: 'Хаттаманы ашу: Сынық немесе қатты соғылу',
+              scenarioId: 'fracture'
+            },
+            {
+              label: '№134 лицей • Асхана • Аптечка #1',
+              targetText: 'Хаттаманы ашу: Қақалып қалу (Геймлих әдісі)',
+              scenarioId: 'choking'
+            },
+            {
+              label: 'Жүзу секциясы • Медпункт',
+              targetText: 'Хаттаманы ашу: Есінен тану',
+              scenarioId: 'unconscious'
+            },
+            {
+              label: 'Үй аптечкасы • Ас үй',
+              targetText: 'Хаттаманы ашу: Термиялық күйік',
+              scenarioId: 'burn'
+            }
+          ],
+
+          scenarios: [
+            {
+              id: 'bleeding',
+              code: 'FA-01',
+              version: 'v2.4',
+              reviewDate: '15.10.2026',
+              urgency: 'urgent',
+              icon: 'bleeding',
+              title: 'Қатты қан кету',
+              hint: 'Кесілу, терең жара, алқызыл немесе қою қан',
+              steps: [
+                {
+                  heading: 'Қолыңызды қорғаңыз және жараны бағалаңыз',
+                  instruction: 'Аптечкадағы медициналық қолғапты киіңіз немесе қолыңызды таза полиэтилен пакетпен ораңыз. Қан көзін көру үшін жараны сыртқы киімнен босатыңыз.',
+                  dont: 'Терең жараны сумен жумаңыз және одан шыны немесе металл сынықтарын алуға тырыспаңыз.',
+                  branch: {
+                    question: 'Қан кетудің сипаты қандай?',
+                    options: [
+                      {
+                        label: 'Қою қан бірқалыпты ағады',
+                        extraInstruction: 'Бұл веналық немесе капиллярлық қан кету. Тікелей қатты басу және қысып таңу жеткілікті.'
+                      },
+                      {
+                        label: 'Алқызыл қан атқылап ағады',
+                        extraInstruction: 'Артериялық қан кету белгісі! Артерияны жарадан жоғары шұғыл басыңыз және 103-ке қоңырау шалыңыз.'
+                      }
+                    ]
+                  }
+                },
+                {
+                  heading: 'Жараны тікелей басу',
+                  instruction: 'Жараға стерильді дәкені, таза бинтті немесе бірнеше қабат бүктелген таза матаны тығыз басыңыз. Екі қолмен үздіксіз басып тұрыңыз.',
+                  dont: '«Қан тоқтады ма» деп тексеру үшін әр 10 секунд сайын қысымды босатпаңыз — бұл ұйыған қанды бұзады.'
+                },
+                {
+                  heading: 'Қысып таңғыш салыңыз',
+                  instruction: 'Дәкенің үстінен тарқатылмаған бинт орамын қысым білігі ретінде тығыз ораңыз. Қан өтіп кетсе, бірінші таңғыштың үстінен екінші қабат салыңыз.',
+                  dont: 'Қан сіңген бірінші таңғышты шешпеңіз — жаңа қабаттарды тек соның үстінен салыңыз.'
+                },
+                {
+                  heading: 'Жағдайды бақылау және 103 шақыру',
+                  instruction: 'Зардап шегушіні жатқызыңыз, зақымдалған аяқ-қолды сәл көтеріңіз (сынық болмаса) және суықтан қорғап жабыңыз. 103 жедел жәрдем бригадасын күтіңіз.',
+                  dont: 'Мойынға, денеге немесе қарапайым веналық қан кету кезінде аса қажеттіліксіз бұрау (жгут) салмаңыз.'
+                }
+              ]
+            },
+            {
+              id: 'burn',
+              code: 'FA-02',
+              version: 'v2.5',
+              reviewDate: '18.10.2026',
+              urgency: 'urgent',
+              icon: 'burn',
+              title: 'Термиялық күйік',
+              hint: 'Қайнаған су, бу, ыстық ыдыс, ашық от',
+              steps: [
+                {
+                  heading: 'Жоғары температура әсерін тоқтатыңыз',
+                  instruction: 'Жылу көзін алыстатыңыз немесе зардап шегушіні қауіпсіз жерге шығарыңыз. Ісіну басталғанға дейін күйік маңындағы сақина, сағат және білезіктерді ақырын шешіңіз.',
+                  dont: 'Теріге жабысып қалған киімді жұлып алмаңыз — матаны жараның айналасынан мұқият қиып алыңыз.'
+                },
+                {
+                  heading: '15 минут бойы салқын сумен суытыңыз',
+                  instruction: 'Терең тіндердің зақымдануын тоқтату үшін күйген жерді 15–20 минут бойы салқын (мұздай емес) ағын судың астында ұстаңыз.',
+                  timerSec: 60,
+                  dont: 'Теріге тікелей мұз баспаңыз, күйікке май, қаймақ, алғашқы минуттарда пантенол жақпаңыз.'
+                },
+                {
+                  heading: 'Таза бос таңғышпен жабыңыз',
+                  instruction: 'Суытқаннан кейін теріні инфекциядан қорғау үшін күйікті стерильді дәкемен немесе түксіз таза мақта матамен жабыңыз.',
+                  dont: 'Пайда болған көпіршіктерді жармаңыз және теспеңіз — бұл ауыр инфекцияға жол ашады.'
+                },
+                {
+                  heading: 'Аумағын бағалаңыз және 103 шақырыңыз',
+                  instruction: 'Зардап шегушіге аз-аздан таза су ішкізіңіз. Егер күйік алақаннан үлкен болса, бет, қол басы зақымдалса немесе бала күйіп қалса — шұғыл 103-ке хабарласыңыз.',
+                  dont: 'Күйген бетке спирт ерітінділерін, йод, зеленка немесе мақта қолданбаңыз.'
+                }
+              ]
+            },
+            {
+              id: 'unconscious',
+              code: 'FA-03',
+              version: 'v2.6',
+              reviewDate: '20.10.2026',
+              urgency: 'urgent',
+              icon: 'unconscious',
+              title: 'Есінен тану',
+              hint: 'Адам құлап қалды, дауысқа және түртуге жауап бермейді',
+              steps: [
+                {
+                  heading: 'Қауіпсіздікке көз жеткізіңіз және реакцияны тексеріңіз',
+                  instruction: 'Айналаны қарап шығыңыз (ашық сымдар, газ немесе көлік жоқ па). Адамның иығынан ақырын түртіп, дауыстап сұраңыз: «Сіз мені естисіз бе? Көмек керек пе?».',
+                  dont: 'Адамның бетінен шапалақтап ұрмаңыз және бетіне су шашпаңыз.'
+                },
+                {
+                  heading: 'Тыныс алу жолдарын ашып, тынысын тексеріңіз',
+                  instruction: 'Бір қолыңызды маңдайына қойып, екінші қолдың екі саусағымен иегін көтеріп басын шалқайтыңыз. Бетіне еңкейіп, 10 секунд бойы тынысын тыңдаңыз және кеуде қозғалысын бақылаңыз.',
+                  timerSec: 10,
+                  dont: 'Басының астына жастық, сөмке немесе бүктелген күрте қоймаңыз — бұл тыныс жолдарын жабады.',
+                  branch: {
+                    question: 'Адам қалыпты тыныс алып жатыр ма (10 секундта кемінде 2 рет)?',
+                    options: [
+                      {
+                        label: 'Иә, қалыпты тыныс алады',
+                        extraInstruction: 'Жақсы! Келесі қадамда адамды тұрақты бүйірлік қалыпқа аударыңыз.'
+                      },
+                      {
+                        label: 'Тыныс жоқ / сирек сырыл',
+                        extraInstruction: 'Дауыс зорайтқышпен шұғыл 103-ке қоңырау шалып, жүрекке тікелей емес массаж жасауды бастаңыз (кеуде ортасына 30 рет басу).'
+                      }
+                    ]
+                  }
+                },
+                {
+                  heading: 'Тыныс болса — бүйіріне жатқызыңыз',
+                  instruction: 'Тіл немесе құсық тыныс жолын жауып қалмауы үшін зардап шегушіні бүйіріне (тұрақты қалпына келтіру қалпы) аударыңыз, үстіңгі аяғын тізеден бүгіп тірек жасаңыз және басын сәл артқа шалқайтыңыз.',
+                  dont: 'Ес-түссіз адамды шалқасынан жатқан күйде қалдырмаңыз және жанынан кетпеңіз.'
+                },
+                {
+                  heading: '103 шақырыңыз және тынысын бақылаңыз',
+                  instruction: '103-ке қоңырау шалып, нақты мекенжайды айтыңыз және жедел жәрдем бригадасы келгенше әр минут сайын тынысын тексеріп тұрыңыз.',
+                  dont: 'Ес-түссіз адамға су, дәрі құюға немесе мүсәтір спиртін иіскетуге тырыспаңыз.'
+                }
+              ]
+            },
+            {
+              id: 'choking',
+              code: 'FA-04',
+              version: 'v2.4',
+              reviewDate: '12.10.2026',
+              urgency: 'urgent',
+              icon: 'choking',
+              title: 'Қақалып қалу (Геймлих әдісі)',
+              hint: 'Адам тамағын ұстап қалды, сөйлей және тыныс ала алмайды',
+              steps: [
+                {
+                  heading: 'Адамның жөтеле алатынын анықтаңыз',
+                  instruction: '«Сіз қақалып қалдыңыз ба?» деп сұраңыз. Егер адам қатты жөтеліп, сөйлей алса — өздігінен жөтелуін қолдаңыз. Егер дыбыс шығара алмай, көгеріп бара жатса — дереу әрекет етіңіз.',
+                  dont: 'Тік тұрған және өзі белсенді жөтеліп жатқан адамның арқасынан қақпаңыз.',
+                  branch: {
+                    question: 'Зардап шегушінің жасы?',
+                    options: [
+                      {
+                        label: 'Ересек немесе 1 жастан асқан бала',
+                        extraInstruction: 'Алға еңкейтіп арқадан қағу және Геймлих әдісін (іштен итеру) қолданыңыз.'
+                      },
+                      {
+                        label: '1 жасқа дейінгі нәресте',
+                        extraInstruction: 'Нәрестенің ішіне Геймлих әдісін жасауға тыйым салынады! Нәрестені басын төмен қаратып білегіңізге етпетінен жатқызыңыз: жауырын ортасына 5 рет қағу және төс сүйегіне екі саусақпен 5 рет басу.'
+                      }
+                    ]
+                  }
+                },
+                {
+                  heading: 'Жауырын арасына 5 сырғымалы соққы',
+                  instruction: 'Бүйірінен және сәл арт жағынан тұрып, зардап шегушінің денесін алға қатты еңкейтіңіз. Алақан түбімен жауырын арасына 5 рет өткір сырғымалы соққы жасаңыз.',
+                  dont: 'Зардап шегушінің арқасы тік тұрғанда соқпаңыз — тұрып қалған зат одан әрі тереңге түсіп кетуі мүмкін.'
+                },
+                {
+                  heading: 'Іштен 5 рет итеру (Геймлих әдісі)',
+                  instruction: 'Адамды артынан құшақтаңыз. Бір қолыңызды жұдырықтап, бас бармақ жағымен кіндік пен қабырға арасының дәл ортасына қойыңыз. Екінші қолмен жұдырықты ұстап, ішке және жоғары қарай 5 рет күрт итеріңіз.',
+                  dont: 'Төменгі қабырғаларға немесе төс сүйегінің ұшына баспаңыз — бұл ішкі ағзаларды жарақаттауы мүмкін.'
+                },
+                {
+                  heading: 'Зат шыққанша 5 + 5 сериясын кезектестіріңіз',
+                  instruction: 'Тыныс жолдары босағанша арқадан 5 соққы мен іштен 5 итеруді кезектестіріңіз. Егер адам есінен танып қалса — еденге жатқызып, 103 шақырыңыз және жүрек-өкпе реанимациясын бастаңыз.',
+                  dont: 'Көрінбей тұрған затты жұтқыншақтан саусақпен соқыр күйде алуға тырыспаңыз.'
+                }
+              ]
+            },
+            {
+              id: 'fracture',
+              code: 'FA-05',
+              version: 'v2.3',
+              reviewDate: '10.10.2026',
+              urgency: 'clinical',
+              icon: 'fracture',
+              title: 'Сынық немесе қатты соғылу',
+              hint: 'Құлағаннан кейінгі қатты ауырсыну, ісіну, табиғи емес қалып',
+              steps: [
+                {
+                  heading: 'Аяқ-қолға толық тыныштық беріңіз',
+                  instruction: 'Зардап шегушіге ауырсыну ең аз болатын ыңғайлы қалыпқа орналасуға көмектесіңіз. Зақымдалған қолды немесе аяқты сол қалпында қозғалтпай бекітіңіз.',
+                  dont: 'Сүйекті өз бетінше орнына салуға, тартуға немесе қисайған аяқ-қолды түзетуге қатаң тыйым салынады.'
+                },
+                {
+                  heading: 'Ашық сынық кезінде — жараны жабыңыз',
+                  instruction: 'Егер жара немесе сүйек көрінсе, оны стерильді дәкемен жабыңыз. Қатты қан кетсе, сүйек сынығына баспай, жара шеттерін басыңыз.',
+                  dont: 'Сыртқа шығып тұрған сүйек сынығын жараның ішіне қайта итеруге тырыспаңыз.'
+                },
+                {
+                  heading: 'Мата арқылы суық басыңыз',
+                  instruction: 'Ісіну мен ішкі қан құйылуды азайту үшін мұз салынған пакетті немесе салқын су құйылған бөтелкені сүлгіге орап, ісінген жерге 15 минутқа басыңыз.',
+                  dont: 'Жылытқыш баспаңыз және соғылған жерді қыздыратын майлармен уқаламаңыз.'
+                },
+                {
+                  heading: 'Иммобилизация және 103 шақыру',
+                  instruction: 'Тасымалдау қажет болса, шендеуіш немесе қолда бар құралдармен сынықтан жоғары және төмен екі көрші буынды бекітіңіз. Аяқ, жамбас немесе омыртқа жарақатында жедел жәрдемді орнында күтіңіз.',
+                  dont: '«Сынық бар-жоғын тексеру үшін» адамды зақымдалған аяғына басуға мәжбүрлемеңіз.'
+                }
+              ]
+            },
+            {
+              id: 'heatstroke',
+              code: 'FA-06',
+              version: 'v2.2',
+              reviewDate: '05.10.2026',
+              urgency: 'clinical',
+              icon: 'heatstroke',
+              title: 'Ыстық өту / күн өту',
+              hint: 'Ыстықта немесе қапырық залда бас айналу, ыстық тері, әлсіздік',
+              steps: [
+                {
+                  heading: 'Көлеңкеге немесе салқын бөлмеге ауыстырыңыз',
+                  instruction: 'Зардап шегушіні күн астынан көлеңкеге, кондиционері бар немесе желдетілетін салқын бөлмеге дереу апарыңыз. Адамды шалқасынан жатқызып, аяғын сәл көтеріңіз.',
+                  dont: 'Зардап шегушіні аяғынан тік тұрғызып қоймаңыз — кенеттен талып, басын жарақаттауы мүмкін.'
+                },
+                {
+                  heading: 'Тар киімнен босатыңыз',
+                  instruction: 'Жылу алмасуды жақсарту үшін жағасын ағытыңыз, белдігін, аяқ киімін және артық синтетикалық киімдерін шешіңіз.',
+                  dont: 'Ауа ағыны жоқ жерде адамды ылғал жаймамен тұтас орамаңыз — бұл бу моншасы әсерін тудырады.'
+                },
+                {
+                  heading: 'Денені жұмсақ салқындатуды бастаңыз',
+                  instruction: 'Ылғалдың булануы үшін бетін, мойнын, қолтық астын және шап аймағын салқын сумен сүртіп, желпіп отырыңыз.',
+                  dont: 'Адамның үстіне мұздай су құймаңыз — тамырлардың күрт тарылуы іштен жылу шығуын тоқтатады.'
+                },
+                {
+                  heading: 'Сұйықтық беріңіз (тек есін білсе)',
+                  instruction: 'Егер адам есін анық білсе және жүрегі айнымаса, салқын суды аз-аздан жұтқызып ішкізіңіз. Есі бұлыңғырланса немесе құсса — шұғыл 103 шақырыңыз.',
+                  dont: 'Тәтті газдалған сусындар, кофе, энергетиктер немесе алкоголь бермеңіз.'
+                }
+              ]
+            },
+            {
+              id: 'poisoning',
+              code: 'FA-07',
+              version: 'v2.3',
+              reviewDate: '08.10.2026',
+              urgency: 'clinical',
+              icon: 'poisoning',
+              title: 'Тағамдық немесе тұрмыстық улану',
+              hint: 'Жүрек айну, құсу, іш ауруы, тұрмыстық химиямен байланыс',
+              steps: [
+                {
+                  heading: 'Себебін анықтаңыз және қаптамасын сақтаңыз',
+                  instruction: 'Адамның нақты не жегенін немесе ішкенін (бұзылған тағам, дәрі-дәрмек, тұрмыстық химия) анықтаңыз. Жедел жәрдем дәрігерлері үшін қаптамасын немесе қалдығын сақтап қойыңыз.',
+                  dont: 'Дәрігерлер келгенше дәрі қаптамаларын немесе сұйықтық бөтелкесін лақтырмаңыз.'
+                },
+                {
+                  heading: 'Кез келген әрекет алдында заттың түрін бағалаңыз',
+                  instruction: 'Егер улану сапасыз тағамнан болса және адам есін білсе — 1–2 стақан таза жылы су және энтеросорбент (белсендірілген көмір немесе смекта) беріңіз.',
+                  dont: 'Қышқылдармен, сілтілермен, бензинмен, тұрмыстық химиямен уланғанда немесе адам ес-түссіз болса ЕШҚАШАН құстырмаңыз!'
+                },
+                {
+                  heading: 'Бөлшектеп су ішкізіңіз және тыныштық беріңіз',
+                  instruction: 'Сусыздануды болдырмау және қайта құсуды тудырмау үшін әр 5–10 минут сайын 1–2 ас қасық таза су беріңіз. Адамды бүйіріне жатқызыңыз.',
+                  dont: 'Диареяға қарсы препараттар (лоперамид) бермеңіз — олар токсиндерді ішек ішінде ұстап қалады.'
+                },
+                {
+                  heading: 'Қауіпті белгілерде 103-ке шұғыл хабарласыңыз',
+                  instruction: 'Егер бала уланса, құрысулар, көздің қосарлануы, тыныс алудың қиындауы, жоғары температура немесе құсықта қан пайда болса — дереу 103 шақырыңыз.',
+                  dont: 'Майда еритін улармен уланғанда сүт бермеңіз және марганцовка қолданбаңыз.'
+                }
+              ]
+            },
+            {
+              id: 'tickbite',
+              code: 'FA-08',
+              version: 'v2.2',
+              reviewDate: '14.10.2026',
+              urgency: 'clinical',
+              icon: 'tickbite',
+              title: 'Кене немесе жәндік шағуы',
+              hint: 'Жабысқан кене табылды немесе ара шаққаннан күрт ісіну бар',
+              steps: [
+                {
+                  heading: 'Аллергиялық реакцияны бағалаңыз',
+                  instruction: 'Ара немесе сона шаққанда еріннің, тілдің ісінуі, қырылдап тыныс алу немесе бас айналу бар-жоғын тексеріңіз. Тұншығу белгілерінде дереу 103 шақырыңыз.',
+                  dont: 'Араның шаншуын саусақпен сығып алмаңыз — оны пластик картаның шетімен ақырын қырып алыңыз.'
+                },
+                {
+                  heading: 'Кенені бұрау арқылы мұқият алыңыз',
+                  instruction: 'Кенені арнайы бұрағышпен (тик-твистер) немесе жіңішке пинцетпен теріге барынша жақын ұстап, жұлқымай өз осінен ақырын бұрап шығарыңыз.',
+                  dont: 'Кенеге май, крем, бензин немесе лак жақпаңыз — тұншыққан кене жараға инфекциялы сілекейін көбірек бөледі.'
+                },
+                {
+                  heading: 'Шаққан жерді антисептикпен өңдеңіз',
+                  instruction: 'Кенені алғаннан кейін теріні сабынды сумен жуып, хлоргексидинмен немесе спиртті антисептикпен өңдеңіз. Қолыңызды мұқият жуыңыз.',
+                  dont: 'Алынған кенені жалаңаш саусақпен езбеңіз.'
+                },
+                {
+                  heading: '72 сағат ішінде травмпунктке жүгініңіз',
+                  instruction: 'Зертханалық талдау үшін кенені ылғал мақта салынған жабық контейнерге салып, энцефалиттің алдын алу үшін медициналық мекемеге (әсіресе Алматы мен ШҚО аймақтарында) барыңыз.',
+                  dont: 'Шаққаннан кейін 30 күн ішінде температураның көтерілуін немесе қызыл сақина тәрізді дақты елеусіз қалдырмаңыз.'
+                }
+              ]
+            }
+          ],
+
+          quiz: [
+            {
+              question: '1. Бала қолына ыстық шай төгіп алды. Ең алдымен не істеу керек?',
+              options: [
+                'Теріге май, балалар кремін немесе қаймақ жағу',
+                'Күйген жерді 15–20 минут бойы салқын ағын судың астында суыту',
+                'Пайда болған көпіршікті стерильді инемен тесу'
+              ],
+              correctIndex: 1,
+              explanation: '15–20 минут бойы салқын ағын су жылудың терінің терең қабаттарына таралуын тоқтатады. Май қабықша түзіп, ыстықты іште ұстап қалады.'
+            },
+            {
+              question: '2. Асханада адам тамағын ұстап қалды, сөйлей алмайды және дыбыс шығармайды. Сіздің әрекетіңіз?',
+              options: [
+                'Оған бір стақан су ішкізу',
+                'Алға еңкейтіп, жауырын арасына 5 соққы мен іштен 5 итеруді (Геймлих әдісі) кезектестіру',
+                'Шалқасынан жатқызып, басының астына жастық қою'
+              ],
+              correctIndex: 1,
+              explanation: 'Тыныс жолдары толық бітелгенде алға еңкейтіп жауырын ортасына 5 сырғымалы соққы мен кіндіктен жоғары 5 іштей итеруді шұғыл кезектестіру қажет.'
+            },
+            {
+              question: '3. Сіз ес-түссіз адамды таптыңыз, бірақ ол қалыпты тыныс алып жатыр. Оны қандай қалыпқа аудару керек?',
+              options: [
+                '103 келгенше шалқасынан жатқан күйде қалдыру',
+                'Орындыққа отырғызып, мүсәтір спиртін иіскету',
+                'Тұрақты бүйірлік қалыпқа (бүйіріне) аудару'
+              ],
+              correctIndex: 2,
+              explanation: 'Тұрақты бүйірлік қалып жедел жәрдем келгенше тілдің артқа кетуін және құсық массасының тыныс жолдарына түсуін болдырмайды.'
+            },
+            {
+              question: '4. Қолдың терең кесілуінде бірінші дәке таңғышқа қан толық сіңіп кетті. Қалай әрекет ету керек?',
+              options: [
+                'Суланған таңғышты шешіп, жаңа құрғақ таңғыш салу',
+                'Бірінші таңғышты шешпей, оның үстінен екінші қысым қабатын салып, тікелей басуды жалғастыру',
+                'Жараны жылы сабынды сумен жуу'
+              ],
+              correctIndex: 1,
+              explanation: 'Бірінші таңғышты шешу қалыптасып жатқан тромбты жұлып алып, қатты қан кетуді қайта бастайды. Жаңа қабаттар тек үстінен салынады.'
+            },
+            {
+              question: '5. Дене шынықтыру сабағында құлағаннан кейін оқушының қолы қатты ісініп, қисайып қалды. Не істеуге ТЫЙЫМ САЛЫНАДЫ?',
+              options: [
+                'Қолдың сол қалпында қозғалмауын қамтамасыз ету',
+                'Мата арқылы 15 минутқа суық басу',
+                'Қолды өз бетінше түзету немесе сүйекті орнына салу'
+              ],
+              correctIndex: 2,
+              explanation: 'Рентгенсіз сынықты немесе шығуды орнына салу әрекеті ірі тамырлардың, жүйкелердің зақымдануына және ауырсыну шогына әкелуі мүмкін.'
+            }
+          ],
+
+          plans: [
+            {
+              id: 'free',
+              tag: 'Базалық қолжетімділік',
+              tagType: 'free',
+              title: 'Жадынамалар / SOS / Офлайн-қолжетімділік',
+              price: '0 ₸',
+              period: 'Мәңгі тегін',
+              featured: false,
+              isFree: true,
+              features: [
+                'Алғашқы көмектің барлық 8 қадамдық хаттамасы (RU / KZ)',
+                'Интернетсіз толық офлайн-режимде жұмыс істеу',
+                '112 / 103 жылдам шақыру батырмасы және диспетчер чек-парағы',
+                'Өзін-өзі тексеруге арналған базалық тесттер'
+              ],
+              btnText: 'Қазір белсенді'
+            },
+            {
+              id: 'video',
+              tag: 'Отбасы мен ата-аналарға',
+              tagType: 'pro',
+              title: '«Алғашқы көмек негіздері» бейнекурсы',
+              price: '2 490 ₸',
+              period: 'бір реттік төлем',
+              featured: false,
+              isFree: false,
+              features: [
+                'Жедел жәрдем дәрігерлерімен 5 минуттық 12 қысқа бейнесабақ',
+                'Үйдегі, ас үйдегі және саяжайдағы тұрмыстық жарақаттарды талдау',
+                'Қорытынды емтихан және атаулы электрондық сертификат'
+              ],
+              btnText: 'Курсты рәсімдеу'
+            },
+            {
+              id: 'workshop',
+              tag: 'Тереңдетілген курс',
+              tagType: 'pro',
+              title: 'Тақырыптық практикум',
+              price: '4 990 ₸',
+              period: 'бір реттік төлем',
+              featured: false,
+              isFree: false,
+              features: [
+                'Арнайы модульдер: «Балаларға алғашқы көмек», «Спорт және жорық», «ЖКО»',
+                'Уақытқа шешім қабылдауға арналған интерактивті тренажерлер',
+                'ҚР үй және автокөлік аптечкасын жинау чек-парағы'
+              ],
+              btnText: 'Практикумды таңдау'
+            },
+            {
+              id: 'b2b',
+              tag: 'Мектептер мен секцияларға B2B',
+              tagType: 'pro',
+              title: 'Оқу тобы (Мектептер / Спорт)',
+              price: '19 900 ₸',
+              period: 'сынып немесе команда үшін / жыл',
+              featured: true,
+              isFree: false,
+              features: [
+                '35 оқушыға дейін қолжетімділік + оқытушы / жаттықтырушы кабинеті',
+                'Сынып бойынша тест тапсырудың жиынтық статистикасы',
+                'Мектеп аптечкаларына арналған суға төзімді QR-жапсырмалар жиынтығы'
+              ],
+              btnText: 'Мектепке демо сұрату'
+            }
+          ]
+        }
+      };
+
+      /* ----------------------------------------------------------------------
+         2. APPLICATION STATE & LOCALSTORAGE PERSISTENCE
+         ---------------------------------------------------------------------- */
+      const STORAGE_KEYS = {
+        lang: 'firstaid_kz_lang',
+        bestScore: 'firstaid_kz_quiz_best'
+      };
+
+      const state = {
+        lang: localStorage.getItem(STORAGE_KEYS.lang) || 'ru',
+        activeTab: 'emergency',
+        activeScenarioId: null,
+        currentStepIndex: 0,
+        selectedBranchOption: null,
+        qrBannerLabel: null,
+        timerInterval: null,
+        timerRemaining: 0,
+        quizIndex: 0,
+        quizScore: 0,
+        quizAnswered: false,
+        selectedQuizOption: null,
+        bestScore: parseInt(localStorage.getItem(STORAGE_KEYS.bestScore) || '0', 10),
+        selectedPlanId: null
+      };
+
+      /* ----------------------------------------------------------------------
+         3. CLEAN MEDICAL SVG ICON GENERATOR
+         ---------------------------------------------------------------------- */
+      function getScenarioIconSvg(type) {
+        const icons = {
+          bleeding: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
+          burn: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+          unconscious: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+          choking: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
+          fracture: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>',
+          heatstroke: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>',
+          poisoning: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>',
+          tickbite: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg>'
+        };
+        return icons[type] || icons.bleeding;
+      }
+
+      /* ----------------------------------------------------------------------
+         4. HELPER UTILITIES (Translation, Toast, Timer, Modals)
+         ---------------------------------------------------------------------- */
+      function t(key, vars = {}) {
+        const dict = APP_DATA[state.lang].ui;
+        let str = dict[key] || key;
+        Object.keys(vars).forEach((k) => {
+          str = str.replace(`{${k}}`, vars[k]);
+        });
+        return str;
+      }
+
+      let toastTimeout = null;
+      function showToast(message) {
+        const toast = document.getElementById('toastMsg');
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2800);
+      }
+
+      function clearStepTimer() {
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        state.timerRemaining = 0;
+      }
+
+      function openModal(modalId) {
+        const el = document.getElementById(modalId);
+        if (el) {
+          el.classList.add('open');
+        }
+      }
+
+      function closeModal(modalId) {
+        const el = document.getElementById(modalId);
+        if (el) {
+          el.classList.remove('open');
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         5. RENDERING: STATIC I18N LABELS & LANGUAGE SWITCHER
+         ---------------------------------------------------------------------- */
+      function applyStaticTranslations() {
+        document.documentElement.lang = state.lang;
+        document.getElementById('offlineBadgeText').textContent = t('offlineBadge');
+
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const key = el.getAttribute('data-i18n');
+          el.textContent = t(key);
+        });
+
+        document.getElementById('langBtnRu').classList.toggle('active', state.lang === 'ru');
+        document.getElementById('langBtnKz').classList.toggle('active', state.lang === 'kz');
+      }
+
+      function setLanguage(newLang) {
+        if (!APP_DATA[newLang]) return;
+        state.lang = newLang;
+        localStorage.setItem(STORAGE_KEYS.lang, newLang);
+        applyStaticTranslations();
+        renderScenariosGrid();
+        renderQrPresets();
+        if (state.activeScenarioId) {
+          renderStepPlayer();
+        }
+        renderQuiz();
+        renderPlans();
+      }
+
+      /* ----------------------------------------------------------------------
+         6. RENDERING: SCENARIO GRID & STEP-BY-STEP DECISION PLAYER
+         ---------------------------------------------------------------------- */
+      function renderScenariosGrid() {
+        const grid = document.getElementById('scenariosGrid');
+        const scenarios = APP_DATA[state.lang].scenarios;
+
+        grid.innerHTML = scenarios
+          .map((item) => {
+            return `
+              <button type="button" class="scenario-card" data-scenario-id="${item.id}">
+                <span class="scenario-icon ${item.urgency}" aria-hidden="true">
+                  ${getScenarioIconSvg(item.icon)}
+                </span>
+                <span class="scenario-body">
+                  <span class="scenario-title" style="display:block;">${item.title}</span>
+                  <span class="scenario-hint" style="display:block;">${item.hint}</span>
+                  <span class="scenario-meta">
+                    <span>${item.code}</span>
+                    <span>•</span>
+                    <span>${item.version}</span>
+                  </span>
+                </span>
+              </button>
+            `;
+          })
+          .join('');
+
+        grid.querySelectorAll('.scenario-card').forEach((card) => {
+          card.addEventListener('click', () => {
+            openScenario(card.getAttribute('data-scenario-id'), null);
+          });
+        });
+      }
+
+      function openScenario(scenarioId, qrLabel = null) {
+        clearStepTimer();
+        state.activeScenarioId = scenarioId;
+        state.currentStepIndex = 0;
+        state.selectedBranchOption = null;
+        state.qrBannerLabel = qrLabel;
+
+        document.getElementById('scenarioListView').style.display = 'none';
+        document.getElementById('stepPlayerView').style.display = 'block';
+        renderStepPlayer();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function closeScenarioPlayer() {
+        clearStepTimer();
+        state.activeScenarioId = null;
+        state.qrBannerLabel = null;
+        document.getElementById('stepPlayerView').style.display = 'none';
+        document.getElementById('scenarioListView').style.display = 'block';
+      }
+
+      function renderStepPlayer() {
+        const scenarios = APP_DATA[state.lang].scenarios;
+        const scenario = scenarios.find((s) => s.id === state.activeScenarioId);
+        if (!scenario) return;
+
+        const totalSteps = scenario.steps.length;
+        const stepIdx = state.currentStepIndex;
+        const step = scenario.steps[stepIdx];
+        const isLastStep = stepIdx === totalSteps - 1;
+
+        // Update counter & progress bar
+        document.getElementById('stepCounterPill').textContent = t('stepCounter', {
+          current: stepIdx + 1,
+          total: totalSteps
+        });
+
+        const pct = Math.round(((stepIdx + 1) / totalSteps) * 100);
+        const progressBar = document.getElementById('stepProgressBar');
+        progressBar.setAttribute('aria-valuenow', String(pct));
+        document.getElementById('stepProgressFill').style.width = `${pct}%`;
+
+        // QR Context Strip if opened via QR simulator
+        const qrStrip = document.getElementById('qrContextStrip');
+        if (state.qrBannerLabel) {
+          qrStrip.style.display = 'flex';
+          qrStrip.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h7v7h-7z"/></svg>
+            <span>${t('qrRoutedBanner', { label: state.qrBannerLabel })}</span>
+          `;
+        } else {
+          qrStrip.style.display = 'none';
+        }
+
+        // Branching clinical question if present on this step
+        let branchHtml = '';
+        if (step.branch) {
+          const selectedOpt =
+            state.selectedBranchOption !== null ? step.branch.options[state.selectedBranchOption] : null;
+          branchHtml = `
+            <div class="branch-box">
+              <div class="branch-question">${step.branch.question}</div>
+              <div class="branch-options">
+                ${step.branch.options
+                  .map(
+                    (opt, idx) => `
+                  <button type="button" class="branch-btn ${state.selectedBranchOption === idx ? 'selected' : ''}" data-branch-idx="${idx}">
+                    <span>${opt.label}</span>
+                    <span aria-hidden="true">${state.selectedBranchOption === idx ? '✓' : '→'}</span>
+                  </button>
+                `
+                  )
+                  .join('')}
+              </div>
+              ${
+                selectedOpt
+                  ? `<div style="margin-top:12px; padding:10px 12px; border-radius:8px; background:#FFFFFF; border:1px solid var(--med-blue-border); font-size:0.92rem; font-weight:600; color:var(--med-blue-hover);">${selectedOpt.extraInstruction}</div>`
+                  : ''
+              }
+            </div>
+          `;
+        }
+
+        // Optional countdown timer helper for timed steps (e.g., 10s breathing check, 60s cooling)
+        let timerHtml = '';
+        if (step.timerSec) {
+          const displaySec = state.timerRemaining > 0 ? state.timerRemaining : step.timerSec;
+          const btnText =
+            state.timerInterval !== null
+              ? t('timerRunning', { sec: displaySec })
+              : t('timerStart', { sec: step.timerSec });
+          timerHtml = `
+            <div class="timer-helper">
+              <span class="timer-display" id="stepTimerDisplay">00:${String(displaySec).padStart(2, '0')}</span>
+              <button type="button" class="btn-timer" id="startStepTimerBtn">${btnText}</button>
+            </div>
+          `;
+        }
+
+        // Completion summary panel on final step
+        const completionHtml = isLastStep
+          ? `
+            <div class="completion-box">
+              <div class="completion-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                <span>${t('completionTitle')}</span>
+              </div>
+              <div class="completion-actions">
+                <button type="button" class="btn-sos" style="min-height:46px;" id="playerCall103Btn">${t('completionCall103')}</button>
+                <button type="button" class="btn-back-list" style="min-height:46px;" id="playerFinishHomeBtn">${t('completionHome')}</button>
+              </div>
+            </div>
+          `
+          : '';
+
+        const container = document.getElementById('stepCardContainer');
+        container.innerHTML = `
+          <div class="step-scenario-label">${scenario.title}</div>
+          <h2 class="step-heading">${step.heading}</h2>
+          <p class="step-instruction">${step.instruction}</p>
+
+          ${branchHtml}
+          ${timerHtml}
+
+          <div class="dont-box" role="alert">
+            <div class="dont-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+              <span>${t('dontTitle')}</span>
+            </div>
+            <div class="dont-text">${step.dont}</div>
+          </div>
+
+          <div class="player-controls">
+            <button type="button" class="btn-step-prev" id="prevStepBtn" ${stepIdx === 0 ? 'disabled' : ''}>
+              ← ${t('btnPrev')}
+            </button>
+            <button type="button" class="btn-step-next ${isLastStep ? 'complete-state' : ''}" id="nextStepBtn">
+              ${isLastStep ? t('btnFinish') : t('btnNext') + ' →'}
+            </button>
+          </div>
+
+          ${completionHtml}
+
+          <div class="trust-badge">
+            <span class="trust-verified-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+              <span>${t('trustVerified')}</span>
+            </span>
+            <span>${t('trustProtocol', { id: scenario.code, ver: scenario.version })} • ${t('trustDate', { date: scenario.reviewDate })}</span>
+          </div>
+        `;
+
+        // Bind branch choice events
+        container.querySelectorAll('.branch-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.selectedBranchOption = parseInt(btn.getAttribute('data-branch-idx'), 10);
+            renderStepPlayer();
+          });
+        });
+
+        // Bind timer button if present
+        const timerBtn = document.getElementById('startStepTimerBtn');
+        if (timerBtn && step.timerSec) {
+          timerBtn.addEventListener('click', () => {
+            clearStepTimer();
+            state.timerRemaining = step.timerSec;
+            timerBtn.textContent = t('timerRunning', { sec: state.timerRemaining });
+            state.timerInterval = setInterval(() => {
+              state.timerRemaining -= 1;
+              const displayEl = document.getElementById('stepTimerDisplay');
+              if (displayEl) {
+                displayEl.textContent = `00:${String(Math.max(0, state.timerRemaining)).padStart(2, '0')}`;
+              }
+              if (state.timerRemaining <= 0) {
+                clearStepTimer();
+                if (timerBtn) {
+                  timerBtn.textContent = t('timerStart', { sec: step.timerSec });
+                }
+                showToast(t('timerDone'));
+              } else if (timerBtn) {
+                timerBtn.textContent = t('timerRunning', { sec: state.timerRemaining });
+              }
+            }, 1000);
+          });
+        }
+
+        // Bind Prev / Next step buttons
+        document.getElementById('prevStepBtn').addEventListener('click', () => {
+          if (state.currentStepIndex > 0) {
+            clearStepTimer();
+            state.currentStepIndex -= 1;
+            state.selectedBranchOption = null;
+            renderStepPlayer();
+          }
+        });
+
+        document.getElementById('nextStepBtn').addEventListener('click', () => {
+          if (state.currentStepIndex < totalSteps - 1) {
+            clearStepTimer();
+            state.currentStepIndex += 1;
+            state.selectedBranchOption = null;
+            renderStepPlayer();
+          } else {
+            closeScenarioPlayer();
+          }
+        });
+
+        const call103Btn = document.getElementById('playerCall103Btn');
+        if (call103Btn) {
+          call103Btn.addEventListener('click', () => openModal('sosModal'));
+        }
+
+        const finishHomeBtn = document.getElementById('playerFinishHomeBtn');
+        if (finishHomeBtn) {
+          finishHomeBtn.addEventListener('click', closeScenarioPlayer);
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         7. RENDERING: QR FIRST-AID KIT SIMULATOR MODAL
+         ---------------------------------------------------------------------- */
+      function renderQrPresets() {
+        const list = document.getElementById('qrPresetList');
+        const presets = APP_DATA[state.lang].qrPresets;
+        list.innerHTML = presets
+          .map(
+            (preset, index) => `
+            <button type="button" class="qr-preset-btn" data-qr-idx="${index}">
+              <span>
+                <strong style="display:block; font-size:0.95rem; color:var(--text-primary);">${preset.label}</strong>
+                <span style="font-size:0.84rem; color:var(--med-blue); font-weight:600;">${preset.targetText}</span>
+              </span>
+              <span style="font-weight:800; color:var(--med-blue);">→</span>
+            </button>
+          `
+          )
+          .join('');
+
+        list.querySelectorAll('.qr-preset-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-qr-idx'), 10);
+            const chosen = presets[idx];
+            closeModal('qrModal');
+            switchTab('emergency');
+            openScenario(chosen.scenarioId, chosen.label);
+          });
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         8. RENDERING: EDTECH KNOWLEDGE CHECK QUIZ
+         ---------------------------------------------------------------------- */
+      function renderQuiz() {
+        const questions = APP_DATA[state.lang].quiz;
+        const total = questions.length;
+        const container = document.getElementById('quizCardContainer');
+        const bestBadge = document.getElementById('bestScoreBadge');
+        const progressLabel = document.getElementById('quizProgressLabel');
+
+        bestBadge.textContent = t('bestScore', { score: state.bestScore, total });
+
+        // Completed state
+        if (state.quizIndex >= total) {
+          if (state.quizScore > state.bestScore) {
+            state.bestScore = state.quizScore;
+            localStorage.setItem(STORAGE_KEYS.bestScore, String(state.bestScore));
+            bestBadge.textContent = t('bestScore', { score: state.bestScore, total });
+          }
+
+          progressLabel.textContent = t('quizProgress', { current: total, total });
+          const feedback = state.quizScore >= 4 ? t('quizResultGood') : t('quizResultMid');
+
+          container.innerHTML = `
+            <div style="text-align:center; padding:12px 0;">
+              <div style="width:60px; height:60px; border-radius:50%; background:var(--safe-green-bg); color:var(--safe-green); display:inline-flex; align-items:center; justify-content:center; margin-bottom:14px;">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+              </div>
+              <h2 style="font-size:1.4rem; font-weight:800; margin-bottom:8px;">${t('quizResultTitle', {
+                score: state.quizScore,
+                total
+              })}</h2>
+              <p style="color:var(--text-secondary); max-width:480px; margin:0 auto 22px;">${feedback}</p>
+              <button type="button" class="btn-step-next" style="width:100%; max-width:300px;" id="restartQuizBtn">${t(
+                'quizRestartBtn'
+              )}</button>
+            </div>
+          `;
+
+          document.getElementById('restartQuizBtn').addEventListener('click', () => {
+            state.quizIndex = 0;
+            state.quizScore = 0;
+            state.quizAnswered = false;
+            state.selectedQuizOption = null;
+            renderQuiz();
+          });
+          return;
+        }
+
+        const q = questions[state.quizIndex];
+        progressLabel.textContent = t('quizProgress', { current: state.quizIndex + 1, total });
+        const letters = ['A', 'B', 'C'];
+
+        container.innerHTML = `
+          <h2 class="quiz-question-text">${q.question}</h2>
+          <div class="quiz-options-list">
+            ${q.options
+              .map((opt, idx) => {
+                let cls = 'quiz-option-btn';
+                if (state.quizAnswered) {
+                  if (idx === q.correctIndex) cls += ' correct';
+                  else if (idx === state.selectedQuizOption) cls += ' wrong';
+                }
+                return `
+                  <button type="button" class="${cls}" data-opt-idx="${idx}" ${state.quizAnswered ? 'disabled' : ''}>
+                    <span class="option-letter">${letters[idx]}</span>
+                    <span>${opt}</span>
+                  </button>
+                `;
+              })
+              .join('')}
+          </div>
+          ${
+            state.quizAnswered
+              ? `
+                <div class="quiz-explanation">
+                  <strong>${state.selectedQuizOption === q.correctIndex ? '✓ ' : '! '}</strong>${q.explanation}
+                </div>
+                <div class="quiz-next-wrap">
+                  <button type="button" class="btn-step-next" id="quizNextQuestionBtn">
+                    ${state.quizIndex === total - 1 ? t('quizResultBtn') : t('quizNextBtn')} →
+                  </button>
+                </div>
+              `
+              : ''
+          }
+        `;
+
+        container.querySelectorAll('.quiz-option-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            if (state.quizAnswered) return;
+            const chosen = parseInt(btn.getAttribute('data-opt-idx'), 10);
+            state.quizAnswered = true;
+            state.selectedQuizOption = chosen;
+            if (chosen === q.correctIndex) {
+              state.quizScore += 1;
+            }
+            renderQuiz();
+          });
+        });
+
+        const nextBtn = document.getElementById('quizNextQuestionBtn');
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            state.quizIndex += 1;
+            state.quizAnswered = false;
+            state.selectedQuizOption = null;
+            renderQuiz();
+          });
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         9. RENDERING: COURSES & B2B FREEMIUM CATALOG + ORDER MODAL
+         ---------------------------------------------------------------------- */
+      function renderPlans() {
+        const grid = document.getElementById('plansGrid');
+        const plans = APP_DATA[state.lang].plans;
+
+        grid.innerHTML = plans
+          .map(
+            (plan) => `
+            <article class="plan-card ${plan.featured ? 'featured' : ''} ${plan.isFree ? 'free-plan' : ''}">
+              <div>
+                <span class="plan-tag ${plan.tagType}">${plan.tag}</span>
+                <h2 class="plan-title">${plan.title}</h2>
+                <div class="plan-price">${plan.price} <span>/ ${plan.period}</span></div>
+                <ul class="plan-features">
+                  ${plan.features
+                    .map(
+                      (feat) => `
+                      <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--safe-green)" stroke-width="2.6" style="flex-shrink:0; margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>${feat}</span>
+                      </li>
+                    `
+                    )
+                    .join('')}
+                </ul>
+              </div>
+              <button type="button" class="btn-plan ${plan.isFree ? 'active-free' : 'primary'}" data-plan-id="${plan.id}" ${
+              plan.isFree ? 'disabled' : ''
+            }>
+                ${plan.btnText}
+              </button>
+            </article>
+          `
+          )
+          .join('');
+
+        grid.querySelectorAll('.btn-plan.primary').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            openOrderModal(btn.getAttribute('data-plan-id'));
+          });
+        });
+      }
+
+      function openOrderModal(planId) {
+        state.selectedPlanId = planId;
+        const plans = APP_DATA[state.lang].plans;
+        const selectedPlan = plans.find((p) => p.id === planId) || plans[1];
+        const body = document.getElementById('orderModalBody');
+
+        body.innerHTML = `
+          <form id="b2bOrderForm" novalidate>
+            <div class="form-group">
+              <label class="form-label">${t('formPlanLabel')}</label>
+              <div style="padding:12px 14px; border-radius:8px; background:var(--med-blue-bg); border:1px solid var(--med-blue-border); font-weight:700; color:var(--med-blue-hover);">
+                ${selectedPlan.title} — ${selectedPlan.price}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="orderUserName">${t('formNameLabel')} *</label>
+              <input type="text" class="form-input" id="orderUserName" placeholder="${t('formNamePlaceholder')}" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="orderUserOrg">${t('formOrgLabel')}</label>
+              <input type="text" class="form-input" id="orderUserOrg" placeholder="${t('formOrgPlaceholder')}" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="orderUserPhone">${t('formPhoneLabel')} *</label>
+              <input type="tel" class="form-input" id="orderUserPhone" placeholder="${t('formPhonePlaceholder')}" required />
+            </div>
+
+            <div class="form-error" id="orderFormError">${t('formErrorMsg')}</div>
+
+            <button type="submit" class="btn-plan primary" style="min-height:54px;">${t('formSubmitBtn')}</button>
+          </form>
+        `;
+
+        openModal('orderModal');
+
+        document.getElementById('b2bOrderForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const nameVal = document.getElementById('orderUserName').value.trim();
+          const phoneVal = document.getElementById('orderUserPhone').value.trim();
+          const errEl = document.getElementById('orderFormError');
+
+          if (nameVal.length < 2 || phoneVal.length < 7) {
+            errEl.style.display = 'block';
+            return;
+          }
+
+          errEl.style.display = 'none';
+          const reqNumber = Math.floor(1000 + Math.random() * 9000);
+          body.innerHTML = `
+            <div style="text-align:center; padding:12px 4px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:var(--safe-green-bg); color:var(--safe-green); display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <h3 style="font-size:1.25rem; font-weight:800; margin-bottom:8px;">${t('orderSuccessTitle', { num: reqNumber })}</h3>
+              <p style="color:var(--text-secondary); font-size:0.95rem; margin-bottom:18px;">${t('orderSuccessText')}</p>
+              <button type="button" class="btn-plan primary" id="closeSuccessOrderBtn">OK</button>
+            </div>
+          `;
+          document.getElementById('closeSuccessOrderBtn').addEventListener('click', () => closeModal('orderModal'));
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         10. TAB NAVIGATION & EVENT LISTENERS INITIALIZATION
+         ---------------------------------------------------------------------- */
+      function switchTab(tabName) {
+        state.activeTab = tabName;
+
+        document.querySelectorAll('.desktop-tab, .mobile-tab').forEach((btn) => {
+          btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+        });
+
+        document.getElementById('viewEmergency').classList.toggle('active', tabName === 'emergency');
+        document.getElementById('viewQuiz').classList.toggle('active', tabName === 'quiz');
+        document.getElementById('viewCourses').classList.toggle('active', tabName === 'courses');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function initApp() {
+        applyStaticTranslations();
+        renderScenariosGrid();
+        renderQrPresets();
+        renderQuiz();
+        renderPlans();
+
+        // Language switchers
+        document.getElementById('langBtnRu').addEventListener('click', () => setLanguage('ru'));
+        document.getElementById('langBtnKz').addEventListener('click', () => setLanguage('kz'));
+
+        // Brand logo resets to main emergency grid
+        document.getElementById('brandHomeBtn').addEventListener('click', () => {
+          switchTab('emergency');
+          closeScenarioPlayer();
+        });
+
+        // Offline badge info toast
+        document.getElementById('offlineBadge').addEventListener('click', (e) => {
+          e.stopPropagation();
+          showToast(t('offlineToast'));
+        });
+
+        // Navigation tabs (Desktop + Mobile)
+        document.querySelectorAll('[data-tab]').forEach((tabBtn) => {
+          tabBtn.addEventListener('click', () => {
+            switchTab(tabBtn.getAttribute('data-tab'));
+          });
+        });
+
+        // Step Player back button
+        document.getElementById('backToScenariosBtn').addEventListener('click', closeScenarioPlayer);
+
+        // SOS Modal triggers
+        document.getElementById('openSosBtn').addEventListener('click', () => openModal('sosModal'));
+
+        // QR Simulator Modal trigger
+        document.getElementById('openQrModalBtn').addEventListener('click', () => openModal('qrModal'));
+
+        // Copy GPS coordinates in SOS modal using execCommand fallback for iFrame safety
+        document.getElementById('copyGeoBtn').addEventListener('click', () => {
+          const text = document.getElementById('geoCoordsText').textContent;
+          const tempInput = document.createElement('textarea');
+          tempInput.value = text;
+          tempInput.style.position = 'fixed';
+          tempInput.style.opacity = '0';
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          try {
+            document.execCommand('copy');
+            showToast(t('copiedToast'));
+          } catch (err) {
+            showToast(text);
+          }
+          document.body.removeChild(tempInput);
+        });
+
+        // Modal close buttons & backdrop clicks
+        document.querySelectorAll('[data-close-modal]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            closeModal(btn.getAttribute('data-close-modal'));
+          });
+        });
+
+        document.querySelectorAll('.modal-backdrop').forEach((backdrop) => {
+          backdrop.addEventListener('click', (e) => {
+            if (e.target === backdrop) {
+              backdrop.classList.remove('open');
+            }
+          });
+        });
+
+        // Escape key closes open modals
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-backdrop.open').forEach((m) => m.classList.remove('open'));
+          }
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', initApp);
+    })();
+  </script>
+</body>
+</html>
